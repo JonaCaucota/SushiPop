@@ -1,11 +1,18 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Carrito
     {
-        public long clienteId { get; set; }
-        public List<Producto> productos { get; set; }
-        public Boolean procesado { get; set; } = false;
-        public Boolean cancelado { get; set; } = false;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdCliente { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public List<Producto> Productos { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public Boolean Procesado { get; set; } = false;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public Boolean Cancelado { get; set; } = false;
 
     }
 }

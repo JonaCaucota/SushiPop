@@ -2,6 +2,6 @@
 {
     public class Empleado : Usuario
     {
-        public long EmpleadoId { get; set; }    
+        public int Legajo { get; set; } = 99000;
     }
 }

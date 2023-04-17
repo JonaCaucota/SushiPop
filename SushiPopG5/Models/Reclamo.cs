@@ -1,11 +1,27 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Reclamo
     {
-        public string nombreCompleto { get; set; }
-        public string email { get; set; }
-        public string telefono { get; set; }
-        public double numeroPedido { get; set; }
-        public string detalleReclamo { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdReclamo { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+
+        [MaxLength(255, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        public string NombreCompleto { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public string Email { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [MaxLength(10, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        public string Telefono { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double NumeroPedido { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [MaxLength(int.MaxValue, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        public string DetalleReclamo { get; set; }
     }
 }

@@ -1,15 +1,37 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Usuario
     {
-        public string nombre { get; set; }
-        public string apellido { get; set; }
-        public string direccion { get; set; }
-        public string telefono { get; set; }
-        public DateTime fechaNacimiento { get; set; }
-        public DateTime fechaAlta = DateTime.Now;
-        public Boolean activo { get; set; }
-        public string email { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdUsuario { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido) ]
+        [MaxLength(30, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [MinLength(30, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        public string Nombre { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [MaxLength(30, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [MinLength(30, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        public string Apellido { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [MaxLength(100, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        public string Direccion { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [MaxLength(10, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        public string Telefono { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [DataType(DataType.Date)]
+        public DateTime FechaNacimiento { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [DataType(DataType.Date)]
+        public DateTime FechaAlta = DateTime.Now;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public Boolean Activo { get; set; } = true;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public string Email { get; set; }
 
     }
 }

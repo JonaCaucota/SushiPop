@@ -1,11 +1,20 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Reserva
     { 
-        public long clienteId { get; set; }
-        public string local { get; set; }
-        public DateTime fechaYHora { get; set; }
-        public Boolean confirmada { get; set; } = false;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdReserva { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdCliente { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public string Local { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public DateTime FechaYHora { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public Boolean Confirmada { get; set; } = false;
 
     }
 }

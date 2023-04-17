@@ -1,12 +1,19 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Descuento
     {
-        public long productoId { get; set; }
-        public int dia { get; set; }
-        public double porcentaje { get; set; }
-        public double descuentoMax { get; set; }
-        public Boolean activo { get; set; } = true;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdProducto { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int Dia { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double Porcentaje { get; set; }
+        public double DescuentoMax { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public Boolean Activo { get; set; } = true;
 
     }
 }

@@ -1,15 +1,28 @@
-﻿namespace SushiPopG5.Models
+﻿using SushiPopG5.Utils;
+using System.ComponentModel.DataAnnotations;
+
+namespace SushiPopG5.Models
 {
     public class Pedido
     {
-        public long nroPedido { get; set; } = 30000;
-        public DateTime fecha { get; set; } = DateTime.Now;
-        public long carritoId { get; set; }
-        public long clienteId { get; set; }
-        public double subtotal { get; set; }
-        public double descuento { get; set; } = 0;
-        public double gastoEnvio { get; set; } = 80;
-        public double total { get; set; }
-        public double estado { get; set; } = 1;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int NroPedido { get; set; } = 30000;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [DataType(DataType.Date)]
+        public DateTime Fecha { get; set; } = DateTime.Now;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdCarrito { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public int IdCliente { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double Subtotal { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double Descuento { get; set; } = 0;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double GastoEnvio { get; set; } = 80;
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double Total { get; set; }
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        public double Estado { get; set; } = 1;
     }
 }
