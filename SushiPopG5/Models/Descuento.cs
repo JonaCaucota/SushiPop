@@ -13,7 +13,7 @@ namespace SushiPopG5.Models
         public double Porcentaje { get; set; }
         public double DescuentoMax { get; set; }
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public Boolean Activo { get; set; } = true;
+        public bool Activo { get; set; } = true;
 
     }
 }

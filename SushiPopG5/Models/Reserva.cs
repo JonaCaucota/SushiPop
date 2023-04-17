@@ -14,7 +14,7 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public DateTime FechaYHora { get; set; }
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public Boolean Confirmada { get; set; } = false;
+        public bool Confirmada { get; set; } = false;
 
     }
 }

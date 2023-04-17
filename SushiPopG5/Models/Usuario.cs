@@ -29,7 +29,7 @@ namespace SushiPopG5.Models
         [DataType(DataType.Date)]
         public DateTime FechaAlta = DateTime.Now;
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public Boolean Activo { get; set; } = true;
+        public bool Activo { get; set; } = true;
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public string Email { get; set; }
 

@@ -10,9 +10,9 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public List<Producto> Productos { get; set; }
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public Boolean Procesado { get; set; } = false;
+        public bool Procesado { get; set; } = false;
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public Boolean Cancelado { get; set; } = false;
+        public bool Cancelado { get; set; } = false;
 
     }
 }
