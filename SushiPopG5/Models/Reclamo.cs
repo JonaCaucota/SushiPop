@@ -5,6 +5,7 @@ namespace SushiPopG5.Models
 {
     public class Reclamo
     {
+        [Key]
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Id { get; set; }
 

@@ -1,10 +1,12 @@
 ﻿using SushiPopG5.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
     public class Producto
     {
+        [Key]
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Id { get; set; }
 
@@ -23,6 +25,7 @@ namespace SushiPopG5.Models
 
         public decimal Costo { get; set; }
         public string? Foto { get; set; }
+        [ForeignKey("CategoriaId")]
         public Categoria Categoria { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]

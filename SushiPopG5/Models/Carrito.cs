@@ -1,10 +1,12 @@
 ﻿using SushiPopG5.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
     public class Carrito
     {
+        [Key]
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Id { get; set; }
 
@@ -18,6 +20,7 @@ namespace SushiPopG5.Models
         public bool Cancelado { get; set; } = false;
 
         public List<CarritoItem> CarritoItems { get; set; }
+        [ForeignKey("PedidoId")]
         public virtual Pedido Pedido { get; set; }
     }
 }
