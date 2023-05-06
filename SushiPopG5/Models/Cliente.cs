@@ -7,5 +7,6 @@ namespace SushiPopG5.Models
     public class Cliente : Usuario
     {
         public int NumeroCliente { get; set; } = 4200000;
+        public List<Pedido> Pedidos { get; set; }
     }
 }

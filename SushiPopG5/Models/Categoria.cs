@@ -6,13 +6,17 @@ namespace SushiPopG5.Models
     public class Categoria
     {
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public int IdCategoria { get; set; } 
+        public int Id { get; set; }
+        
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(100, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
-        [MinLength(100, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        [MinLength(4, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
         public string Nombre { get; set; }
+
         [MaxLength(int.MaxValue, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
         public string Descripcion { get; set; }
+
+        public List<Producto> Productos { get; set; }
 
     }
 }

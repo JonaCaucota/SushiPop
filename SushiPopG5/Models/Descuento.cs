@@ -6,12 +6,16 @@ namespace SushiPopG5.Models
     public class Descuento
     {
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public int IdProducto { get; set; }
+        public int Id { get; set; }
+
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Dia { get; set; }
+
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Porcentaje { get; set; }
-        public double DescuentoMax { get; set; }
+
+        public double? DescuentoMax { get; set; }
+
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Activo { get; set; } = true;
 
