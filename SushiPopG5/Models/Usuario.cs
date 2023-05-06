@@ -41,6 +41,5 @@ namespace SushiPopG5.Models
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public string Email { get; set; }
-
     }
 }
