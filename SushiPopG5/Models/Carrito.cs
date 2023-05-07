@@ -10,7 +10,7 @@ namespace SushiPopG5.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public List<Producto> Productos { get; set; }
+        public List<Producto>? Productos { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Procesado { get; set; } = false;
@@ -18,8 +18,12 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Cancelado { get; set; } = false;
 
-        public List<CarritoItem> CarritoItems { get; set; }
+        public List<CarritoItem>? CarritoItems { get; set; }
+        
         [ForeignKey("PedidoId")]
-        public virtual Pedido Pedido { get; set; }
+        public virtual Pedido? Pedido { get; set; }
+        
+        [ForeignKey("ClienteId")]
+        public Cliente Cliente { get; set; }
     }
 }
