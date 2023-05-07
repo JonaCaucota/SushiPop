@@ -14,9 +14,9 @@ namespace SushiPopG5.Models
         public string Nombre { get; set; }
 
         [MaxLength(int.MaxValue, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
-        public string Descripcion { get; set; }
+        public string? Descripcion { get; set; }
 
-        public List<Producto> Productos { get; set; }
+        public List<Producto>? Productos { get; set; }
 
     }
 }
