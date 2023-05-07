@@ -31,12 +31,10 @@ namespace SushiPopG5.Models
         [DataType(DataType.Date)]
         public DateTime FechaNacimiento { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [DataType(DataType.Date)]
-        public DateTime FechaAlta = DateTime.Now;
+        public DateTime? FechaAlta { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public bool Activo { get; set; } = true;
+        public bool? Activo { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public string Email { get; set; }
