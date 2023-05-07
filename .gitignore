@@ -3,6 +3,38 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Rider files
+.idea/
+*.sln.iml
+*.csproj.user
+*.pidb
+*.suo
+*.user
+
+# Build results
+/bin/
+/obj/
+
+# Visual Studio files
+*.userprefs
+*.vs/
+
+# NuGet
+/nuget/
+/packages/
+
+# Test Results
+/TestResults/
+
+# Other files
+*.resharper
+*.resharper.user
+*.DotSettings
+*.ncrunchsolution
+*.ncrunchproject
+*.codekit-cache
+.vscode/
+
 # User-specific files
 *.rsuser
 *.suo
