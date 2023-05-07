@@ -8,17 +8,17 @@ namespace SushiPopG5.Models
     {
         [Key]
         public int Id { get; set; }
+        
         [ForeignKey("CarritoId")]
-        public virtual Carrito Carrito { get; set; }
-        [ForeignKey("ClienteId")]
-        public Cliente Cliente { get; set; }
+        public virtual Carrito? Carrito { get; set; }
+        
+        [ForeignKey("ReclamoId")]
+        public virtual Reclamo? Reclamo { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public int NroPedido { get; set; } = 30000;
+        public int? NroPedido { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [DataType(DataType.Date)]
-        public DateTime Fecha { get; set; } = DateTime.Now;
+        public DateTime? Fecha { get; set; }
         
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Subtotal { get; set; }
@@ -33,5 +33,6 @@ namespace SushiPopG5.Models
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Estado { get; set; } = 1;
+        
     }
 }
