@@ -9,18 +9,16 @@ namespace SushiPopG5.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [ForeignKey("ClienteId")]
-        public Cliente Cliente { get; set; }
+        public Cliente? Cliente { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public string Local { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public DateTime FechaYHora { get; set; }
-
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public bool Confirmada { get; set; } = false;
+        
+        public bool? Confirmada { get; set; }
 
     }
 }
