@@ -2,6 +2,6 @@
 {
     public class Empleado : Usuario
     {
-        public int Legajo { get; set; } = 99000;
+        public int? Legajo { get; set; }
     }
 }
