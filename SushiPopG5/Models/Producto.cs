@@ -23,11 +23,17 @@ namespace SushiPopG5.Models
         public decimal Precio { get; set; }
 
         public decimal Costo { get; set; }
+        
         public string? Foto { get; set; }
+        
         [ForeignKey("CategoriaId")]
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Stock { get; set; } = 100;
+
+        public List<Descuento> Descuentos { get; set; }
+        
+        public List<CarritoItem> CarritoItems { get; set; }
     }
 }
