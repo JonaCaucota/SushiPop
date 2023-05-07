@@ -7,11 +7,15 @@ namespace SushiPopG5.Models
     {
         [Key]
         public int Id { get; set; }
+        
         [ForeignKey("CarritoId")]
         public Carrito? Carrito { get; set; }
+        
         [ForeignKey("ProductoId")]
         public Producto? Producto { get; set; }
+        
         public double Precio { get; set; }
+        
         public int Cantidad { get; set; }
     }
 }
