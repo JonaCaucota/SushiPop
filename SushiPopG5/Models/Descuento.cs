@@ -1,5 +1,6 @@
 ﻿using SushiPopG5.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
@@ -18,6 +19,9 @@ namespace SushiPopG5.Models
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Activo { get; set; } = true;
+        
+        [ForeignKey("ProductoId")]
+        public Producto Producto { get; set; }
 
     }
 }
