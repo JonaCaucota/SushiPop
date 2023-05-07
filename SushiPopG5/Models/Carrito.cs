@@ -7,7 +7,6 @@ namespace SushiPopG5.Models
     public class Carrito
     {
         [Key]
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Id { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]

@@ -7,7 +7,6 @@ namespace SushiPopG5.Models
     public class Pedido
     {
         [Key]
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int Id { get; set; }
         [ForeignKey("CarritoId")]
         public virtual Carrito Carrito { get; set; }
