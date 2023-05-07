@@ -32,8 +32,8 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Stock { get; set; } = 100;
 
-        public List<Descuento> Descuentos { get; set; }
+        public List<Descuento>? Descuentos { get; set; }
         
-        public List<CarritoItem> CarritoItems { get; set; }
+        public List<CarritoItem>? CarritoItems { get; set; }
     }
 }
