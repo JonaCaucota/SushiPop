@@ -1,5 +1,6 @@
 ﻿using SushiPopG5.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
@@ -20,8 +21,8 @@ namespace SushiPopG5.Models
         [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
         public string Telefono { get; set; }
 
-        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public int NumeroPedido { get; set; }
+        [ForeignKey("PedidoId")] 
+        public Pedido? Pedido { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(int.MaxValue, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
