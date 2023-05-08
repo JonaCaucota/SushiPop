@@ -1,0 +1,44 @@
+﻿@model SushiPopG5.Models.Reserva
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Reserva</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Local" class="control-label"></label>
+                <input asp-for="Local" class="form-control" />
+                <span asp-validation-for="Local" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaYHora" class="control-label"></label>
+                <input asp-for="FechaYHora" class="form-control" />
+                <span asp-validation-for="FechaYHora" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Confirmada" class="control-label"></label>
+                <input asp-for="Confirmada" class="form-control" />
+                <span asp-validation-for="Confirmada" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
