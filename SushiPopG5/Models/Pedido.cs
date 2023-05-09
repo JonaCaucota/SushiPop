@@ -12,12 +12,10 @@ namespace SushiPopG5.Models
         
         public int CarritoId { get; set; }
         
-        [ForeignKey("CarritoId")]
         public virtual Carrito? Carrito { get; set; }
         
         public int ReclamoId { get; set; }
         
-        [ForeignKey("ReclamoId")]
         public virtual Reclamo? Reclamo { get; set; }
 
         [Display(Name = "Numero de pedido")]
