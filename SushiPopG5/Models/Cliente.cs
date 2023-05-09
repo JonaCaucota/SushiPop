@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
+    [Table("T_CLIENTE")]
     public class Cliente : Usuario
     {
         public int? NumeroCliente { get; set; }

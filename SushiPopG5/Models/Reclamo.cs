@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
+    [Table("T_RECLAMO")]
     public class Reclamo
     {
         [Key]
@@ -11,6 +12,7 @@ namespace SushiPopG5.Models
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(255, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+        [Display(Name = "Nombre completo")]
         public string NombreCompleto { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
@@ -19,6 +21,7 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(10, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
         [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        [Display(Name = "Teléfono")]
         public string Telefono { get; set; }
 
         [ForeignKey("PedidoId")] 
@@ -27,6 +30,7 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(int.MaxValue, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
         [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        [Display(Name = "Detalle del reclamo")]
         public string DetalleReclamo { get; set; }
     }
 }

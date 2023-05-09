@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
+    [Table("T_PRODUCTO")]
     public class Producto
     {
         [Key]
@@ -17,14 +18,17 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [MaxLength(250, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
         [MinLength(20, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+        [Display(Name = "Descripción")]
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public decimal Precio { get; set; }
 
         public decimal Costo { get; set; }
-        
+        [Display(Name = "URL de fotografía")]
         public string? Foto { get; set; }
+        
+        public int CategoriaId { get; set; }
         
         [ForeignKey("CategoriaId")]
         public Categoria? Categoria { get; set; }
