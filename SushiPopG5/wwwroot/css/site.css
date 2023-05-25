@@ -1,3 +1,7 @@
+:root {
+  --text-highlight-color: #F26569;
+}
+
 html {
   font-size: 14px;
 }
@@ -14,6 +18,23 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
-    font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito', sans-serif;
+  margin: 0;
+}
+
+h1, h2 {
+  font-weight: bold;
+}
+
+h1 {
+  line-height: 150%;
+  font-size: 3rem;
+}
+
+.highlight {
+  color: var(--text-highlight-color);
+}
+
+a {
+  text-decoration: none;
 }

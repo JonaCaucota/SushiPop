@@ -11,7 +11,8 @@ namespace SushiPopG5.Models
         public int Id { get; set; }
         
         public int CarritoId { get; set; }
-        
+
+        [ForeignKey("CarritoId")]
         public virtual Carrito? Carrito { get; set; }
         
         public int ReclamoId { get; set; }

@@ -1,8 +1,21 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
+ViewData["DD"] = DateTime.Now.ToString("dddd");
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <a class="bg-image w-100 d-flex align-items-center justify-content-center"
+        style="background-image: url('/images/bg_hero.png'); height: 380px;" href="/Categorias">
+
+        <h1 class="w-50 text-light" style="margin-left: 400px;">
+            Hoy es <span class="text-uppercase highlight">@ViewData["DD"]</span>.
+            Disfrutá del mejor sushi <span class="highlight">#EnCasa</span> con amigos.
+        </h1>
+    </a>
+    <section class="w-full" style="margin-top: 16px;">
+        <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
+            <h2>Los favoritos</h2>
+            <img src="/images/emoticon_smile.png" height="45" />
+        </div>
+    </section>
 </div>
