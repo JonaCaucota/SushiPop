@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
-    public class DbContext : Microsoft.EntityFrameworkCore.DbContext
+    public class DbContext : IdentityDbContext
     {
         public DbContext (DbContextOptions<DbContext> options)
             : base(options)
