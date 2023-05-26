@@ -1,16 +1,15 @@
 ﻿@{
 ViewData["Title"] = "Home Page";
-ViewData["Day"] = DateTime.Now.ToString("dddd");
 }
 
 <div>
     <a class="bg-image w-100 d-flex align-items-center justify-content-center"
         style="background-image: url('/images/bg_hero.png'); height: 380px;" href="/Categorias">
 
-        <h1 class="w-50 text-light" style="margin-left: 400px;">
+        <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
             Hoy es <span class="text-uppercase highlight">@ViewData["Day"]</span>.
             Disfrutá del mejor sushi <span class="highlight">#EnCasa</span> con amigos.
-        </h1>
+        </h2>
     </a>
     <section class="w-full my-4">
         <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
@@ -19,23 +18,34 @@ ViewData["Day"] = DateTime.Now.ToString("dddd");
         </div>
         <div class="container mt-4">
             <div class="row">
-                <div class="col-8 home-fav border border-secondary" style="background-image: url('/images/fav_tabla.png');">
+                <div class="col-8 home-fav border border-secondary"
+                    style="background-image: url('/images/fav_tabla.png');">
                     <p class="w-full bg-75 text-center fw-bold fs-5 py-1 mb-0">Combo 100% salmón Alaska XL de 40
                         piezas</p>
                 </div>
-                <div class="col-4 home-fav border border-secondary" style="background-image: url('/images/fav_postre.png');">
+                <div class="col-4 home-fav border border-secondary"
+                    style="background-image: url('/images/fav_postre.png');">
                     <p class="w-full bg-75 text-center fw-bold fs-5 py-1 mb-0">Postre helado OREO</p>
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-4 home-fav border border-secondary" style="background-image: url('/images/fav_arrolladitos.png');">
+                <div class="col-4 home-fav border border-secondary"
+                    style="background-image: url('/images/fav_arrolladitos.png');">
                     <p class="w-full bg-75 text-center fw-bold fs-5 py-1 mb-0">Empanaditas chinas de carne</p>
                 </div>
-                <div class="col-8 home-fav border border-secondary" style="background-image: url('/images/fav_tempura.png');">
+                <div class="col-8 home-fav border border-secondary"
+                    style="background-image: url('/images/fav_tempura.png');">
                     <p class="w-full bg-75 text-center fw-bold fs-5 py-1 mb-0">Langostinos rebozados en panko
                         fritos con salsa tamarindo</p>
                 </div>
             </div>
         </div>
     </section>
+    <a class="w-100 d-flex justify-content-center align-items-center px-24 my-5" style="background-color: #F64C34;"
+        href="https://api.whatsapp.com/send?phone=541140044004" target="_blank">
+        <p class="fs-1 mr-24 fw-bold text-light-home">Hoy <span
+                class="yellow-highlight text-uppercase">@ViewData["Day"]</span> atendemos de
+            @ViewData["HorarioAtencion"] por WhatsApp <span class="yellow-highlight">+541140044004</span></p>
+        <img src="/images/delivery_guy.png" />
+    </a>
 </div>

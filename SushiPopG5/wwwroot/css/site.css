@@ -1,5 +1,6 @@
 :root {
   --text-highlight-color: #F26569;
+  --text-yellow-highlight-color: #FFDE59;
 }
 
 html {
@@ -35,6 +36,10 @@ h1 {
   color: var(--text-highlight-color);
 }
 
+.yellow-highlight {
+  color: var(--text-yellow-highlight-color);
+}
+
 .home-fav {
   height: 350px;
   background-size: cover;
@@ -52,4 +57,20 @@ a {
 
 .bg-75 {
   background-color: rgba(0, 0, 0, .75);
+}
+
+.absolute {
+  position: absolute;
+}
+
+.px-24 {
+  padding: 0 6rem 0 6rem;
+}
+
+.mr-24 {
+  margin-right: 6rem;
+}
+
+.text-light-home {
+  color: #FFFEFE;
 }
