@@ -35,6 +35,21 @@ h1 {
   color: var(--text-highlight-color);
 }
 
+.home-fav {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #FFFEFE;
+}
+
 a {
   text-decoration: none;
+}
+
+.bg-75 {
+  background-color: rgba(0, 0, 0, .75);
 }
