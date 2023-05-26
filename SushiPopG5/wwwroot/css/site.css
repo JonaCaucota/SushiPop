@@ -74,3 +74,12 @@ a {
 .text-light-home {
   color: #FFFEFE;
 }
+
+.local {
+  color: #EC1C24;
+  text-align: center;
+}
+
+.local > section {
+  border: 2px solid  #EC1C24;
+}
