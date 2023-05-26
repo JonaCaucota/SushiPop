@@ -17,8 +17,8 @@
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="/images/logo.png" alt="Descripción de la imagen">
+                <a class="navbar-brand" href="../Views/Home/Index.cshtml">
+                    <img src="/images/logo.png" alt="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active"  aria-current="page" href="#">Combos</a>
+                            <a class="nav-link active" aria-current="page" href="#">Combos</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Piezas</a>
@@ -46,13 +46,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Postres</a>
                         </li>
-                         
+                    </ul>  
+                </div>
 
-                    </ul>
-                    <form class="d-flex" role="search">
-                        <i class="bi bi-cart"></i>
-                        <i class="bi bi-person-fill"></i>
-                    </form>
+                <div class="iconos">
+                    <i class="bi bi-cart"></i>
+                    <i class="bi bi-person-fill"></i>
                 </div>
             </div>
         </nav>
@@ -63,9 +62,38 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer">
         <div class="container">
-            &copy; 2023 - SushiPopG5 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col">
+                    <a href="Home/index">
+                    <img src="/images/logo_sin_fondo.png" alt="logo footer">
+                    </a>
+                </div>
+                <div class="col">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Combos</a></li>
+                        <li><a href="#">Piezas</a></li>
+                        <li><a href="#">Salads</a></li>
+                        <li><a href="#">Entradas</a></li>
+                        <li><a href="#">Salsas</a></li>
+                        <li><a href="#">Bebidas</a></li>
+                        <li><a href="#">Postres</a></li>
+
+                    </ul>
+                </div>
+                <div class="col">
+                    <ul class="list-unstyled">
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">Seguir Pedido</a></li>
+                        <li><a href="#">Reclamos</a></li>
+                        <li><a href="#">Legales</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p> ® 2023 SushiPOP - Desarrollo Web Grupo 5 ORT </p>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
