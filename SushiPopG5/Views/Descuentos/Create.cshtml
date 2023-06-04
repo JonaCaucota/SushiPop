@@ -12,6 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
                 <label asp-for="Dia" class="control-label"></label>
                 <input asp-for="Dia" class="form-control" />
@@ -27,6 +28,13 @@
                 <input asp-for="DescuentoMax" class="form-control" />
                 <span asp-validation-for="DescuentoMax" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ProductoId" class="control-label">Producto</label>
+                <select asp-for="ProductoId" class="form-control" asp-items='@(ViewData["Productos"] as IEnumerable<SelectListItem>)'>
+                    <option value="" disabled selected hidden>Seleccione un producto</option>
+                </select>
+                <span asp-validation-for="ProductoId" class="text-danger"></span>
+            </div>                        
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Activo" /> @Html.DisplayNameFor(model => model.Activo)

@@ -12,7 +12,8 @@ namespace SushiPopG5.Models
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [Display(Name = "Día")]
-        public int Dia { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Dia { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Porcentaje { get; set; }
@@ -23,10 +24,11 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Activo { get; set; } = true;
         
+        [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public int ProductoId { get; set; }
         
         [ForeignKey("ProductoId")]
-        public Producto Producto { get; set; }
+        public Producto? Producto { get; set; }
 
     }
 }

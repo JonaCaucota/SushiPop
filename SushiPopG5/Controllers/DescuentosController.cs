@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,9 @@ namespace SushiPopG5.Controllers
         // GET: Descuentos
         public async Task<IActionResult> Index()
         {
-              return _context.Descuento != null ? 
-                          View(await _context.Descuento.ToListAsync()) :
-                          Problem("Entity set 'DbContext.Descuento'  is null.");
+            return _context.Descuento != null ?
+                        View(await _context.Descuento.ToListAsync()) :
+                        Problem("Entity set 'DbContext.Descuento'  is null.");
         }
 
         // GET: Descuentos/Details/5
@@ -47,6 +48,9 @@ namespace SushiPopG5.Controllers
         // GET: Descuentos/Create
         public IActionResult Create()
         {
+            var productos = _context.Producto.ToList();
+            ViewData["Productos"] = new SelectList(productos, "Id", "Nombre");
+
             return View();
         }
 
@@ -55,16 +59,27 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Dia,Porcentaje,DescuentoMax,Activo")] Descuento descuento)
+        public async Task<IActionResult> Create([Bind("Id,Dia,Porcentaje,DescuentoMax,Activo,ProductoId")] Descuento descuento)
         {
+            bool existeDescuento = await _context.Descuento.AnyAsync(d => d.ProductoId == descuento.ProductoId && d.Dia == descuento.Dia);
+
+            if (existeDescuento)
+            {
+                ModelState.AddModelError("Dia", "Ya existe un descuento para este producto en el día especificado.");
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(descuento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            var productos = await _context.Producto.ToListAsync();
+            ViewData["Productos"] = new SelectList(productos, "Id", "Nombre");
             return View(descuento);
         }
+
 
         // GET: Descuentos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -149,14 +164,14 @@ namespace SushiPopG5.Controllers
             {
                 _context.Descuento.Remove(descuento);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DescuentoExists(int id)
         {
-          return (_context.Descuento?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Descuento?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
