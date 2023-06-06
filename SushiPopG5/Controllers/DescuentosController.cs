@@ -22,9 +22,9 @@ namespace SushiPopG5.Controllers
         // GET: Descuentos
         public async Task<IActionResult> Index()
         {
-            return _context.Descuento != null ?
-                        View(await _context.Descuento.ToListAsync()) :
-                        Problem("Entity set 'DbContext.Descuento'  is null.");
+            var descuentos = await _context.Descuento.Include(d => d.Producto).ToListAsync();
+
+            return View(descuentos);
         }
 
         // GET: Descuentos/Details/5
