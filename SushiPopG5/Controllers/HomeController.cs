@@ -3,25 +3,38 @@ using Microsoft.Extensions.Logging;
 using SushiPopG5.Models;
 using System;
 using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+
 
 namespace SushiPopG5.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, DbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             DateTime today = DateTime.Now;
             string horarioAtencion = ObtenerHorarioAtencion(today.DayOfWeek);
+            var descuentoDelDia = await _context.Descuento.Include(d => d.Producto).FirstOrDefaultAsync((Descuento d) => d.Dia == today.Date);
+            bool hayDescuento = descuentoDelDia != null && descuentoDelDia.Activo;
 
             ViewData["Day"] = today.ToString("dddd");
             ViewData["HorarioAtencion"] = horarioAtencion;
+
+            if (hayDescuento)
+            {
+                ViewData["DescuentoDelDia"] = await _context.Descuento.FirstOrDefaultAsync((Descuento d) => d.Dia == today.Date);
+            }
 
             return View();
         }

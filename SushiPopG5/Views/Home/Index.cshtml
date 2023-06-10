@@ -1,17 +1,31 @@
 ﻿@{
-ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page";
 }
 
 <div>
-    <a class="bg-image w-100 d-flex align-items-center justify-content-center"
+    @if (ViewData["DescuentoDelDia"] == null)
+    {
+        @* Q: Esto debería redirigir al detalle de Categorias/Combos *@
+        <a class="bg-image w-100 d-flex align-items-center justify-content-center"
         style="background-image: url('/images/bg_hero.png'); height: 380px;" href="/Categorias">
-
-        <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
-            @* TO DO:// Logica de descuento según el dia *@
-            Hoy es <span class="text-uppercase highlight">@ViewData["Day"]</span>.
-            Disfrutá del mejor sushi <span class="highlight">#EnCasa</span> con amigos.
-        </h2>
-    </a>
+            <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
+                Hoy es <span class="text-uppercase highlight">@ViewData["Day"]</span>.
+                Disfrutá del mejor sushi <span class="highlight">#EnCasa</span> con amigos.
+            </h2>
+        </a>
+    }
+    else
+    {
+        var descuentoDelDia = (Descuento)ViewData["DescuentoDelDia"];
+        <div class="bg-image w-100 d-flex align-items-center justify-content-center"
+        style="background-image: url('/images/bg_hero.png'); height: 380px;">
+            <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
+                Hoy <span class="text-uppercase highlight">@ViewData["Day"]</span> ahorrá un <span
+                class="highlight">@descuentoDelDia.Porcentaje%</span> en <a class="text-uppercase highlight"
+                href="@Url.Action("Details", "Productos", new { id = descuentoDelDia.ProductoId })">@descuentoDelDia.Producto.Nombre</a>!
+            </h2>
+        </div>
+    }
     <section class="w-100 my-4">
         <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
             <h2 class="fs-1">Los favoritos</h2>
