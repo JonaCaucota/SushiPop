@@ -9,14 +9,14 @@
         <table class="table">
             <thead>
             <tr>
-                <th class="row justify-content-around">
-                    <div class="col-4">
-                        @Html.DisplayNameFor(model => model.NombreCompleto)
-
-                    </div>
-                    <div class="col-4">
-                        @Html.DisplayNameFor(model => model.Leido)
-                    </div>
+                <th scope="col" class="text-center">
+                    @Html.DisplayNameFor(model => model.NombreCompleto)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayNameFor(model => model.Leido)
+                </th>
+                <th class="text-center" >
+                    Accion
                 </th>
             </tr>
             </thead>
@@ -24,16 +24,13 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td class="row justify-content-around">
-                        <div class="col-4">
-                            @Html.DisplayFor(modelItem => item.NombreCompleto)
-                                
-                        </div>
-                        <div class="col-4">
-                            @Html.DisplayFor(modelItem => item.Leido)
-                        </div>
+                    <th scope="row " class="text-center">
+                        @Html.DisplayFor(modelItem => item.NombreCompleto)
+                    </th>
+                    <td class="align-items-center text-center">
+                        @Html.DisplayFor(modelItem => item.Leido)
                     </td>
-                    <td >
+                    <td class="text-center">
                         <a asp-action="Details" asp-route-id="@item.Id">Leer mensaje</a>
                     </td>
                 </tr>
