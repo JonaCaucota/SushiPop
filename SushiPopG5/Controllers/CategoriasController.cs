@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Categorias/Create
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +57,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion")] Categoria categoria)
         {
             if (ModelState.IsValid)
@@ -67,6 +70,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Categorias/Edit/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Categoria == null)
@@ -87,6 +91,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion")] Categoria categoria)
         {
             if (id != categoria.Id)
@@ -118,6 +123,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Categorias/Delete/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Categoria == null)
@@ -138,6 +144,7 @@ namespace SushiPopG5.Controllers
         // POST: Categorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Categoria == null)

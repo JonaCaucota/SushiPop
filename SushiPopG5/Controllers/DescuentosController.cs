@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Descuentos
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
             var descuentos = await _context.Descuento.Include(d => d.Producto).ToListAsync();
@@ -28,6 +30,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Descuentos/Details/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Descuento == null)
@@ -46,6 +49,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Descuentos/Create
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public IActionResult Create()
         {
             var productos = _context.Producto.ToList();
@@ -59,6 +63,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Create([Bind("Id,Dia,Porcentaje,DescuentoMax,Activo,ProductoId")] Descuento descuento)
         {
             bool existeDescuento = await _context.Descuento.AnyAsync(d => d.ProductoId == descuento.ProductoId && d.Dia == descuento.Dia);
@@ -82,6 +87,7 @@ namespace SushiPopG5.Controllers
 
 
         // GET: Descuentos/Edit/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Descuento == null)
@@ -102,6 +108,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Dia,Porcentaje,DescuentoMax,Activo")] Descuento descuento)
         {
             if (id != descuento.Id)
@@ -133,6 +140,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Descuentos/Delete/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Descuento == null)
@@ -153,6 +161,7 @@ namespace SushiPopG5.Controllers
         // POST: Descuentos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Descuento == null)

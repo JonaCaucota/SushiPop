@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
               return _context.Reclamo != null ? 
@@ -27,6 +29,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos/Details/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Reclamo == null)
@@ -45,6 +48,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos/Create
+        [Authorize(Roles = "CLIENTE")]
         public IActionResult Create()
         {
             return View();
@@ -55,6 +59,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "CLIENTE")]
         public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,DetalleReclamo")] Reclamo reclamo)
         {
             if (ModelState.IsValid)
@@ -67,6 +72,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos/Edit/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Reclamo == null)
@@ -87,6 +93,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,NombreCompleto,Email,Telefono,DetalleReclamo")] Reclamo reclamo)
         {
             if (id != reclamo.Id)
@@ -118,6 +125,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos/Delete/5
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Reclamo == null)
@@ -138,6 +146,7 @@ namespace SushiPopG5.Controllers
         // POST: Reclamos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Reclamo == null)
