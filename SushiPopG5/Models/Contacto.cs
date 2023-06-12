@@ -16,6 +16,7 @@ namespace SushiPopG5.Models
         public string NombreCompleto { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+        [Display(Name = "Correo Electrónico")]
         public string Email { get; set; }
 
         [MaxLength(10, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
