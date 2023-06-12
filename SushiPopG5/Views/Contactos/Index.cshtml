@@ -5,56 +5,39 @@
 }
 <div class="row justify-content-center">
     <div class="col-8">
-        <h1 class="text-center">Contactos</h1>
-        <p>
-            <a asp-action="Create">Create New</a>
-        </p>
+        <h1 class="text-center pb-4">Contactos</h1>
         <table class="table">
             <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.NombreCompleto)
+                <th class="row justify-content-around">
+                    <div class="col-4">
+                        @Html.DisplayNameFor(model => model.NombreCompleto)
+
+                    </div>
+                    <div class="col-4">
+                        @Html.DisplayNameFor(model => model.Leido)
+                    </div>
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Telefono)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Mensaje)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Leido)
-                </th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NombreCompleto)
+                    <td class="row justify-content-around">
+                        <div class="col-4">
+                            @Html.DisplayFor(modelItem => item.NombreCompleto)
+                                
+                        </div>
+                        <div class="col-4">
+                            @Html.DisplayFor(modelItem => item.Leido)
+                        </div>
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Telefono)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Mensaje)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Leido)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <td >
+                        <a asp-action="Details" asp-route-id="@item.Id">Leer mensaje</a>
                     </td>
                 </tr>
+                
             }
             </tbody>
         </table>

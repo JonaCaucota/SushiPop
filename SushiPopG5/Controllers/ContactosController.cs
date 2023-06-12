@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
@@ -19,6 +15,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Contactos
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
               return _context.Contacto != null ? 
@@ -41,6 +38,8 @@ namespace SushiPopG5.Controllers
                 return NotFound();
             }
 
+            contacto.Leido = true;
+
             return View(contacto);
         }
 
@@ -55,13 +54,14 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,Mensaje,Leido")] Contacto contacto)
+        public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,Mensaje")] Contacto contacto)
         {
             if (ModelState.IsValid)
             {
+                contacto.Leido = false;
                 _context.Add(contacto);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("ThankYou");
             }
             return View(contacto);
         }
@@ -152,6 +152,11 @@ namespace SushiPopG5.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> ThankYou()
+        {
+            return View("ThankYou");
         }
 
         private bool ContactoExists(int id)
