@@ -50,14 +50,14 @@
                     </h4>
                 </div>
                 <div class="col-6">
-                    <input asp-for="Mensaje" class="form-control w-100 p-5 col-8" style="word-wrap: break-word;"/>
+                    <textarea asp-for="Mensaje" class="form-control w-100 pb-5 col-8"></textarea>
                     <span asp-validation-for="Mensaje" class="text-danger"></span>
                     <div class="row justify-content-around p-3">
                         <div class="col-3 p-3">
                             <input type="submit" value="Create" class="btn btn-primary"/>
                         </div>
                         <div class="col-3 p-3">
-                            <a asp-action="Index" class="btn btn-danger" >Borrar</a>
+                            <a asp-action="Index" class="btn btn-danger">Borrar</a>
                         </div>
                     </div>
                 </div>
