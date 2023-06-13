@@ -59,14 +59,18 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "CLIENTE")]
-        public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,DetalleReclamo")] Reclamo reclamo)
+        [Authorize(Roles = "CLIENTE, ADMIN")]
+        public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,Pedido,DetalleReclamo")] Reclamo reclamo)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(reclamo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (NumPedidoExists(reclamo.Pedido.Id))
+                {
+                    _context.Add(reclamo);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                
             }
             return View(reclamo);
         }
@@ -166,6 +170,11 @@ namespace SushiPopG5.Controllers
         private bool ReclamoExists(int id)
         {
           return (_context.Reclamo?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private bool NumPedidoExists(int numPedido)
+        {
+            return (_context.Pedido?.Any(e => e.Id == numPedido)).GetValueOrDefault();
         }
     }
 }

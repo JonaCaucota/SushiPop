@@ -4,67 +4,84 @@
     ViewData["Title"] = "Create";
 }
 
-<section class="container">
-
-
-
-<hr />
 <div class="row justify-content-center">
-       
-    <div class="col-md-4">
-       
-        <form asp-action="Create">
+    <div class="col-8">
+        <h2 class="text-center">Reclamos</h2>
+        <hr/>
+        <form asp-action="Create" class="container">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group row justify-content-start p-3">
+                <div class="col-6 text-center">
+                    <h4>
+                        <label asp-for="NombreCompleto" class="control-label"></label>
+                    </h4>
+                </div>
+                <div class="col-6">
+                    <input asp-for="NombreCompleto" class="form-control"/>
+                    <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-start p-3">
+                <div class="col-6 text-center">
+                    <h4>
+                        <label asp-for="Email" class="control-label"></label>
+                    </h4>
+                </div>
+                <div class="col-6">
+                    <input asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-content-start p-3">
+                <div class="col-6 text-center">
+                    <h4>
+                        <label asp-for="Telefono" class="control-label"></label>
+                    </h4>
+                </div>
+                <div class="col-6">
+                    <input asp-for="Telefono" class="form-control"/>
+                    <span asp-validation-for="Telefono" class="text-danger"></span>
+                </div>
 
-                <div class="form-group row mb-2">
-                    <h1 class="align-content-center">Reclamos</h1>
+            </div>
+            <div class="form-group row justify-content-start p-3">
+                <div class="col-6 text-center">
+                    <h4>
+                        <label asp-for="Pedido" class="control-label"></label>
+                    </h4>
                 </div>
-                <div class="form-group row mb-2">
-                    <label asp-for="NombreCompleto" class="col-sm-6 col-form-label"></label>
-                <div class="col-sm-6">
-                <input asp-for="NombreCompleto" class="form-control" />
-                <span asp-validation-for="NombreCompleto" class="text-danger"></span>
+                <div class="col-6">
+                    <input asp-for="Pedido" class="form-control"/>
+                    <span asp-validation-for="Pedido" class="text-danger"></span>
                 </div>
             </div>
-                <div class="form-group row mb-2">
-                    <label asp-for="Email" class="col-sm-6 col-form-label"></label>
-                    <div class="col-sm-6">
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
+            <div class="form-group row justify-content-start p-3">
+                <div class="col-6 text-center">
+                    <h4>
+                        <label asp-for="DetalleReclamo" class="control-label"></label>
+                    </h4>
                 </div>
-                <div class="form-group row mb-2">
-                    <label asp-for="Telefono" class="col-sm-6 col-form-label"></label>
-                    <div class="col-sm-6">
-                    <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-                    </div>
-            </div>
-                <div class="form-group row mb-2">
-                    <label asp-for="DetalleReclamo" class="col-sm-6 col-form-label"></label>
-                        <div class="col-sm-6">
-                    <input asp-for="DetalleReclamo" class="form-control" />
+                <div class="col-6">
+                    <textarea asp-for="DetalleReclamo" class="form-control w-100 pb-5 col-8"></textarea>
                     <span asp-validation-for="DetalleReclamo" class="text-danger"></span>
+                    <div class="row justify-content-around p-3">
+                        <div class="col-3 p-3">
+                            <a asp-action="Index" class="btn btn-danger">Borrar</a>
+                        </div>
+                        <div class="col-3 p-3">
+                            <input type="submit" value="Create" class="btn btn-primary"/>
+                        </div>
                     </div>
+                </div>
             </div>
-                <div class="form-group row mb-2">
-                    <label class="col-sm-6 col-form-label"></label>
-                    <div class="col-sm-6">
-                <input type="submit" value="Borrar" class="btn btn-danger" />
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-                    </div>
-                    
-            </div>
+
         </form>
+
+
+        @section Scripts {
+            @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+        }
+
     </div>
+
 </div>
-
-</section>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
