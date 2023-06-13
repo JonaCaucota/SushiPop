@@ -39,6 +39,8 @@ namespace SushiPopG5.Controllers
             }
 
             contacto.Leido = true;
+            _context.Update(contacto);
+            await _context.SaveChangesAsync();
 
             return View(contacto);
         }

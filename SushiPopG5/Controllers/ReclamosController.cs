@@ -48,7 +48,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reclamos/Create
-        [Authorize(Roles = "CLIENTE")]
+        [Authorize(Roles = "CLIENTE, ADMIN, EMPLEADO")]
         public IActionResult Create()
         {
             return View();
