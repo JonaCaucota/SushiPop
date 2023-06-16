@@ -22,9 +22,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Local" class="control-label"></label>
-                <input asp-for="Local" class="form-control"/>
+                <select asp-for="Local" class="form-control form-select">
+                        <option value="Palermo">Palermo</option>
+                        <option value="Recoleta">Recoleta</option>
+                        <option value="Belgrano">Belgrano</option>
+                        <option value="Caballito">Caballito</option>
+                    </select>
                 <span asp-validation-for="Local" class="text-danger"></span>
             </div>
+
+
             <div class="form-group">
                 <label asp-for="FechaYHora" class="control-label"></label>
                 <input asp-for="FechaYHora" class="form-control"/>
