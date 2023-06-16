@@ -182,7 +182,33 @@ namespace SushiPopG5.Controllers
         
         public async Task<IActionResult> Follow(int estado)
         {
-            
+            string msj = "";
+            switch (estado)
+            {
+               case 1:
+                   msj = "Sin confirmar";
+                   break;
+               case 2:
+                   msj = "Confirmado";
+                   break;
+               case 3:
+                   msj = "En preparación";
+                   break;
+               case 4:
+                   msj = "En reparto";
+                   break;
+               case 5:
+                   msj = "Entregado";
+                   break;
+               case 6:
+                   msj = "Cancelado";
+                   break;
+               default:
+                   msj = "Ha ocurrido un error";
+                   break;
+            }
+
+            ViewData["Mensaje"] = msj;
             return View();
         }
 
