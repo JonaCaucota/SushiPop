@@ -4,39 +4,77 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Reserva</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Local" class="control-label"></label>
-                <input asp-for="Local" class="form-control" />
-                <span asp-validation-for="Local" class="text-danger"></span>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <h1 class="text-center">Create</h1>
+        <hr />
+        <div class="container">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group row justify-content-start p-3">
+                        <div class="col-6 text-center">
+                            <h4>
+                                <label class="control-label">Nombre</label>
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" value= "@ViewData["Nombre"]" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-start p-3">
+                        <div class="col-6 text-center">
+                            <h4>
+                                <label class="control-label">Apellido</label>
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control" value= "@ViewData["Apellido"]" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-start p-3">
+                        <div class="col-6 text-center">
+                            <h4>
+                                <label asp-for="Local" class="control-label"></label>
+                            </h4>
+                        </div>
+                        <div class="col-6">
+                            <select asp-for="Local" class="form-control form-select text-center">
+                                <option value="Palermo">Palermo</option>
+                                <option value="Recoleta">Recoleta</option>
+                                <option value="Belgrano">Belgrano</option>
+                                <option value="Caballito">Caballito</option>
+                            </select>
+                            <span asp-validation-for="Local" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group row justify-content-start p-3">
+                        <div class="col-6 text-center">
+                            <h4>
+                                <label asp-for="FechaYHora" class="control-label"></label>
+                            </h4>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h4>
+                                <input asp-for="FechaYHora" class="form-control text-center"/>
+                                <span asp-validation-for="FechaYHora" class="text-danger "></span>
+                                <div class="row justify-content-around p-3">
+                                    <div class="col-3 p-3">
+                                        <input type="submit" value="Create" class="btn btn-primary"/>
+                                    </div>
+                                    <div class="col-3 p-3">
+                                        <a asp-action="Index" asp-controller="Home" class="btn btn-danger">Borrar</a>
+                                    </div>
+                                </div>
+                            </h4>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaYHora" class="control-label"></label>
-                <input asp-for="FechaYHora" class="form-control" />
-                <span asp-validation-for="FechaYHora" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Confirmada" class="control-label"></label>
-                <input asp-for="Confirmada" class="form-control" />
-                <span asp-validation-for="Confirmada" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

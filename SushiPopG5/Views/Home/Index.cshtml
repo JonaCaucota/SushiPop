@@ -7,7 +7,7 @@
     {
         @* Q: Esto debería redirigir al detalle de Categorias/Combos *@
         <a class="bg-image w-100 d-flex align-items-center justify-content-center"
-        style="background-image: url('/images/bg_hero.png'); height: 380px;" href="/Categorias">
+           style="background-image: url('/images/bg_hero.png'); height: 380px;" href="/Categorias">
             <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
                 Hoy es <span class="text-uppercase highlight">@ViewData["Day"]</span>.
                 Disfrutá del mejor sushi <span class="highlight">#EnCasa</span> con amigos.
@@ -18,83 +18,108 @@
     {
         var descuentoDelDia = (Descuento)ViewData["DescuentoDelDia"];
         <div class="bg-image w-100 d-flex align-items-center justify-content-center"
-        style="background-image: url('/images/bg_hero.png'); height: 380px;">
+             style="background-image: url('/images/bg_hero.png'); height: 380px;">
             <h2 class="fs-1 w-50 text-light" style="margin-left: 400px;">
-                Hoy <span class="text-uppercase highlight">@ViewData["Day"]</span> ahorrá un <span
-                class="highlight">@descuentoDelDia.Porcentaje%</span> en <a class="text-uppercase highlight"
-                href="@Url.Action("Details", "Productos", new { id = descuentoDelDia.ProductoId })">@descuentoDelDia.Producto.Nombre</a>!
+                Hoy <span class="text-uppercase highlight">@ViewData["Day"]</span> ahorrá un
+                <span
+                    class="highlight">
+                    @descuentoDelDia.Porcentaje%
+                </span> en
+                <a class="text-uppercase highlight"
+                   href="@Url.Action("Details", "Productos", new { id = descuentoDelDia.ProductoId })">
+                    @descuentoDelDia.Producto.Nombre
+                </a>!
             </h2>
         </div>
     }
     <section class="w-100 my-4">
         <div class="d-flex align-items-center justify-content-center" style="gap: 10px;">
             <h2 class="fs-1">Los favoritos</h2>
-            <img src="/images/emoticon_smile.png" height="45" />
+            <img src="/images/emoticon_smile.png" height="45"/>
         </div>
         <div class="container mt-4">
             <div class="row">
                 <div class="col-8 home-fav border border-secondary"
-                    style="background-image: url('/images/fav_tabla.png');">
-                    <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">Combo 100% salmón Alaska XL de 40
-                        piezas</p>
+                     style="background-image: url('/images/fav_tabla.png');">
+                    <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">
+                        Combo 100% salmón Alaska XL de 40
+                        piezas
+                    </p>
                 </div>
                 <div class="col-4 home-fav border border-secondary"
-                    style="background-image: url('/images/fav_postre.png');">
+                     style="background-image: url('/images/fav_postre.png');">
                     <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">Postre helado OREO</p>
                 </div>
             </div>
             <div class="row mt-4">
                 <div class="col-4 home-fav border border-secondary"
-                    style="background-image: url('/images/fav_arrolladitos.png');">
+                     style="background-image: url('/images/fav_arrolladitos.png');">
                     <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">Empanaditas chinas de carne</p>
                 </div>
                 <div class="col-8 home-fav border border-secondary"
-                    style="background-image: url('/images/fav_tempura.png');">
-                    <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">Langostinos rebozados en panko
-                        fritos con salsa tamarindo</p>
+                     style="background-image: url('/images/fav_tempura.png');">
+                    <p class="w-100 bg-75 text-center fw-bold fs-5 py-1 mb-0">
+                        Langostinos rebozados en panko
+                        fritos con salsa tamarindo
+                    </p>
                 </div>
             </div>
         </div>
     </section>
     <a class="w-100 d-flex justify-content-center align-items-center px-24 my-5" style="background-color: #F64C34;"
-        href="https://api.whatsapp.com/send?phone=541140044004" target="_blank">
-        <p class="fs-1 mr-24 fw-bold text-light-home">Hoy <span
-                class="yellow-highlight text-uppercase">@ViewData["Day"]</span> atendemos de
-            @ViewData["HorarioAtencion"] por WhatsApp <span class="yellow-highlight">+541140044004</span></p>
-        <img src="/images/delivery_guy.png" />
+       href="https://api.whatsapp.com/send?phone=541140044004" target="_blank">
+        <p class="fs-1 mr-24 fw-bold text-light-home">
+            Hoy
+            <span
+                class="yellow-highlight text-uppercase">
+                @ViewData["Day"]
+            </span> atendemos de
+            @ViewData["HorarioAtencion"] por WhatsApp <span class="yellow-highlight">+541140044004</span>
+        </p>
+        <img src="/images/delivery_guy.png"/>
     </a>
     <section class="w-100">
-        <h2 class="fs-1 text-center">Nuestros locales</h2>
-        <div class="d-flex align-items-center justify-content-between px-5 my-5">
-            <div class="local">
-                <img src="/images/local_palermo.png" width="300px" height="200px" />
-                <section class="bg-dark py-4">
-                    <h4 class="fw-bold">PALERMO</h4>
-                    <span>Alto Palermo local 1</span>
-                </section>
-            </div>
-            <div class="local">
-                <img src="/images/local_recoleta.png" width="300px" height="200px" />
-                <section class="bg-dark py-4">
-                    <h4 class="fw-bold">RECOLETA</h4>
-                    <span>Callao 986</span>
-                </section>
-            </div>
-            <div class="local">
-                <img src="/images/local_belgrano.png" width="300px" height="200px" />
-                <section class="bg-dark py-4">
-                    <h4 class="fw-bold">BELGRANO</h4>
-                    <span>Av. Monroe 2401</span>
-                </section>
-            </div>
-            <div class="local">
-                <img src="/images/local_caballito.png" width="300px" height="200px" />
-                <section class="bg-dark py-4">
-                    <h4 class="fw-bold">CABALLITO</h4>
-                    <span>Av. Acoye 234</span>
-                </section>
-            </div>
+        <h2 class="fs-1 text-center pb-4">Nuestros locales</h2>
+        <div class="d-flex align-items-center justify-content-between">
+            <a asp-action="Create" asp-controller="Reservas">
+                <div class="local">
+                    <img src="/images/local_palermo.png" width="300px" height="200px"/>
+                    <section class="bg-dark py-4">
+                        <h4 class="fw-bold">PALERMO</h4>
+                        <span>Alto Palermo local 1</span>
+                    </section>
+                </div>
+            </a>
+            <a asp-action="Create" asp-controller="Reservas">
+                <div class="local">
+                    <img src="/images/local_recoleta.png" width="300px" height="200px"/>
+                    <section class="bg-dark py-4">
+                        <h4 class="fw-bold">RECOLETA</h4>
+                        <span>Callao 986</span>
+                    </section>
+                
+                </div>
+            </a>
+            <a asp-action="Create" asp-controller="Reservas">
+                <div class="local">
+                    <img src="/images/local_belgrano.png" width="300px" height="200px"/>
+                    <section class="bg-dark py-4">
+                        <h4 class="fw-bold">BELGRANO</h4>
+                        <span>Av. Monroe 2401</span>
+                    </section>
+                </div>
+            </a>
+            <a asp-action="Create" asp-controller="Reservas">
+                <div class="local">
+                    <img src="/images/local_caballito.png" width="300px" height="200px"/>
+                    <section class="bg-dark py-4">
+                        <h4 class="fw-bold">CABALLITO</h4>
+                        <span>Av. Acoye 234</span>
+                    </section>
+                </div>
+            </a>
+            
         </div>
-        <p class="text-center">Lunes a viernes de 11 a 15 hs. y de 18 a 23:30 hs. Sábado y domingo de 17 a 0 hs.</p>
+        <p class="text-center pt-4">Lunes a viernes de 11 a 15 hs. y de 18 a 23:30 hs. Sábado y domingo de 17 a 0 hs.</p>
     </section>
 </div>

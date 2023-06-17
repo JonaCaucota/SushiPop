@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,11 @@ namespace SushiPopG5.Controllers
     public class ReservasController : Controller
     {
         private readonly DbContext _context;
-
-        public ReservasController(DbContext context)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ReservasController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reservas
@@ -47,9 +50,21 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reservas/Create
-        [Authorize(Roles = "CLIENTE")]
-        public IActionResult Create()
+        [Authorize(Roles = "CLIENTE, ADMIN")]
+        public async Task<IActionResult> Create()
         {
+            var usuarioLogeado = await _userManager.GetUserAsync(User);
+            var user = await _context.Usuario.FirstOrDefaultAsync(x => x.Email.ToUpper().Equals(usuarioLogeado.Email.ToUpper()));
+            string nombre = "";
+            string apellido = "";
+            if (user != null)
+            {
+                nombre = user.Nombre;
+                apellido = user.Apellido;
+            }
+
+            ViewData["Nombre"] = nombre;
+            ViewData["Apellido"] = apellido;
             return View();
         }
 
@@ -58,8 +73,8 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "CLIENTE")]
-        public async Task<IActionResult> Create([Bind("Id,Local,FechaYHora,Confirmada")] Reserva reserva)
+        [Authorize(Roles = "CLIENTE, ADMIN")]
+        public async Task<IActionResult> Create([Bind("Id,Local,FechaYHora")] Reserva reserva)
         {
             if (ModelState.IsValid)
             {
@@ -161,6 +176,7 @@ namespace SushiPopG5.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        
 
         private bool ReservaExists(int id)
         {
