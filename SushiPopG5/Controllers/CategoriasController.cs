@@ -45,6 +45,26 @@ namespace SushiPopG5.Controllers
             return View(categoria);
         }
 
+        public async Task<IActionResult> Categorias(string? nombreCategoria)
+        {
+            if (nombreCategoria == null || _context.Categoria == null)
+            {
+                return NotFound();
+            }
+
+            var categoria = await _context.Categoria
+                .Include(x => x.Productos)
+                .Where(x => x.Nombre == nombreCategoria)
+                .FirstOrDefaultAsync();
+
+            if (categoria == null)
+            {
+                return NotFound();
+            }
+
+            return View("Details",categoria);
+        }
+
         // GET: Categorias/Create
         [Authorize(Roles = "EMPLEADO, ADMIN")]
         public IActionResult Create()
