@@ -31,7 +31,7 @@ namespace SushiPopG5.Models
         public int CategoriaId { get; set; }
         
         [ForeignKey("CategoriaId")]
-        public Categoria Categoria { get; set; }
+        public Categoria? Categoria { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public double Stock { get; set; } = 100;

@@ -58,17 +58,6 @@
             <div class="form-group row justify-content-start p-3">
                 <div class="col-6 text-center">
                     <h4>
-                        <label asp-for="Costo" class="control-label"></label>
-                    </h4>
-                </div>
-                <div class="col-6">
-                    <input asp-for="Costo" class="form-control" />
-                    <span asp-validation-for="Costo" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group row justify-content-start p-3">
-                <div class="col-6 text-center">
-                    <h4>
                         <label asp-for="Foto" class="control-label"></label>
                     </h4>
                 </div>
@@ -95,11 +84,11 @@
                     </h4>
                 </div>
                 <div class="col-6">
-                    <select asp-for="Categoria" class="form-control form-select text-center">
+                    <select asp-for="CategoriaId" class="form-control form-select text-center">
                         @if(ViewData["CATEGORIAS"] != null) {
                             @foreach (var item in (List<Categoria>)ViewData["CATEGORIAS"])
                             {
-                                <option value=@item.Nombre>@item.Nombre</option>
+                                <option value="@item.Id">@item.Nombre</option>
                             }
                         }
                     </select>

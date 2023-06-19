@@ -59,15 +59,21 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock")] Producto producto)
+        public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock,CategoriaId")] Producto producto)
         {
             
             if (ModelState.IsValid)
             {
+                if (_context.Categoria != null)
+                {
+                    var categoria = await _context.Categoria.FirstOrDefaultAsync(m => m.Id == producto.CategoriaId);
+                    producto.Categoria = categoria;
+                }
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CATEGORIAS"] =   await _context.Categoria.ToListAsync();
             return View(producto);
         }
 
