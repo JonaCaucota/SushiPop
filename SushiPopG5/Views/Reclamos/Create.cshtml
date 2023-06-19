@@ -85,3 +85,11 @@
     </div>
 
 </div>
+
+@if(TempData["ErrorMessage"] != null)
+{
+    <script>
+        let mensajeError = "@TempData["ErrorMessage"]";
+        alert(mensajeError);
+    </script>
+}

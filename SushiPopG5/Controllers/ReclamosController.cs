@@ -60,17 +60,19 @@ namespace SushiPopG5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "CLIENTE, ADMIN")]
-        public async Task<IActionResult> Create([Bind("Id,NombreCompleto,Email,Telefono,Pedido,DetalleReclamo")] Reclamo reclamo)
+        public async Task<IActionResult> Create([Bind("NombreCompleto,Email,Telefono,Pedido,DetalleReclamo")] Reclamo reclamo)
         {
             if (ModelState.IsValid)
             {
-                if (NumPedidoExists(reclamo.Pedido.Id))
+                bool pedidoExists = reclamo.Pedido != null ? true : false;
+                if (pedidoExists)
                 {
                     _context.Add(reclamo);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                
+                string mensajeError = "Error, el numero de pedido no existe, ingrese uno correcto";
+                TempData["ErrorMessage"] = mensajeError;   
             }
             return View(reclamo);
         }
