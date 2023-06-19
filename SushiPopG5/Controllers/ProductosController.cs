@@ -47,8 +47,10 @@ namespace SushiPopG5.Controllers
 
         // GET: Productos/Create
         [Authorize(Roles = "EMPLEADO, ADMIN")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
+        
         {
+            ViewData["CATEGORIAS"] =   await _context.Categoria.ToListAsync();
             return View();
         }
 
@@ -59,6 +61,7 @@ namespace SushiPopG5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock")] Producto producto)
         {
+            
             if (ModelState.IsValid)
             {
                 _context.Add(producto);
