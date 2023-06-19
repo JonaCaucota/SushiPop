@@ -64,12 +64,16 @@ namespace SushiPopG5.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool pedidoExists = reclamo.Pedido != null ? true : false;
+                bool pedidoExists = reclamo.Pedido != null;
                 if (pedidoExists)
                 {
-                    _context.Add(reclamo);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    int id = reclamo.Pedido.Id;
+                    if (NumPedidoExists(id))
+                    {
+                        _context.Add(reclamo);
+                        await _context.SaveChangesAsync();
+                        return RedirectToAction(nameof(Index));
+                    }
                 }
                 string mensajeError = "Error, el numero de pedido no existe, ingrese uno correcto";
                 TempData["ErrorMessage"] = mensajeError;   

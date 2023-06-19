@@ -80,7 +80,8 @@ namespace SushiPopG5.Controllers
         [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion")] Categoria categoria)
         {
-            if (ModelState.IsValid)
+            Categoria categoriaBuscada = _context.Categoria.FirstOrDefault(c => c.Nombre == categoria.Nombre);
+            if (ModelState.IsValid && categoriaBuscada == null)
             {
                 _context.Add(categoria);
                 await _context.SaveChangesAsync();
