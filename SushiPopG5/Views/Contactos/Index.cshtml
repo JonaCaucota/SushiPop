@@ -28,14 +28,7 @@
                         @Html.DisplayFor(modelItem => item.NombreCompleto)
                     </th>
                     <td class="align-items-center text-center">
-                        @if (item.Leido)
-                        {
-                            <div class="d-inline p-2 bg-primary"></div>    
-                        }
-                        else
-                        {
-                            <div class="d-inline p-2 bg-danger"></div>
-                        }
+                        <input type="checkbox" disabled @(item.Leido ? "checked" : "") />
                     </td>
                     <td class="text-center">
                         <a asp-action="Details" asp-route-id="@item.Id">Leer mensaje</a>

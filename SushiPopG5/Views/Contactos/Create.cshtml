@@ -3,11 +3,19 @@
 @{
     ViewData["Title"] = "Create";
 }
+
 <div class="row justify-content-center">
     <div class="col-8">
         <h2 class="text-center">Contacto</h2>
         <hr/>
-        <form asp-action="Create" class="container">
+
+        @if (ViewBag.EsEmpleado)
+        {
+            <p class="text-center">Los empleados no pueden enviar mensajes.</p>
+        }
+        else
+        {
+           <form asp-action="Create" class="container">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row justify-content-start p-3">
                 <div class="col-6 text-center">
@@ -27,7 +35,7 @@
                     </h4>
                 </div>
                 <div class="col-6">
-                    <input asp-for="Email" class="form-control"/>
+                    <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
             </div>
@@ -59,17 +67,16 @@
                         <div class="col-3 p-3">
                             <a asp-action="Index" asp-controller="Home" class="btn btn-danger">Borrar</a>
                         </div>
-                    </div>
+              
+                     </div>
+           
                 </div>
             </div>
 
         </form>
-
-
+        }
         @section Scripts {
             @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
         }
-
     </div>
-
 </div>
