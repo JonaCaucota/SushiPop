@@ -25,7 +25,7 @@ namespace SushiPopG5.Models
 
         public virtual Pedido? Pedido { get; set; }
 
-        public int ClienteId { get; set; }
+        public string ClienteId { get; set; }
 
         [ForeignKey("ClienteId")]
         public Cliente Cliente { get; set; }

@@ -24,4 +24,19 @@
     <_ContentIncludedByDefault Remove="Views\Legales\index.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Utils\Assets\imgs\foto_producto_default.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\sin_stock.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

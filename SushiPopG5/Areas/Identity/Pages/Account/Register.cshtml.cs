@@ -18,7 +18,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SushiPopG5.Models;
+using SushiPopG5.Utils;
 
 namespace SushiPopG5.Areas.Identity.Pages.Account
 {
@@ -29,6 +32,7 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
     private readonly IUserStore<IdentityUser> _userStore;
     private readonly IUserEmailStore<IdentityUser> _emailStore;
     private readonly ILogger<RegisterModel> _logger;
+    private readonly DbContext _context;
     //private readonly IEmailSender _emailSender;
     private readonly RoleManager<IdentityRole> _roleManager;
     public RegisterModel(
@@ -37,7 +41,8 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
         SignInManager<IdentityUser> signInManager,
         ILogger<RegisterModel> logger,
         //IEmailSender emailSender
-        RoleManager<IdentityRole> roleManager)
+        RoleManager<IdentityRole> roleManager,
+        DbContext dbContext)
     {
       _userManager = userManager;
       _userStore = userStore;
@@ -45,7 +50,7 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
       _signInManager = signInManager;
       _logger = logger;
       //_emailSender = emailSender;
-
+      _context = dbContext;
       _roleManager = roleManager;
     }
 
@@ -101,6 +106,38 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
       [Display(Name = "Confirm password")]
       [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
       public string ConfirmPassword { get; set; }
+      
+      [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido) ]
+      [MaxLength(30, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+      [MinLength(2, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+      public string Nombre { get; set; }
+
+      [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+      [MaxLength(30, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+      [MinLength(2, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+      public string Apellido { get; set; }
+
+      [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+      [MaxLength(100, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+      [Display(Name = "Dirección")]
+      public string Direccion { get; set; }
+
+      [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+      [MaxLength(10, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
+      [MinLength(10, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]
+      [Display(Name = "Teléfono")]
+      public string Telefono { get; set; }
+
+      [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
+      [DataType(DataType.Date)]
+      [Display(Name = "Fecha de nacimiento")]
+      public DateTime FechaNacimiento { get; set; }
+
+      [DataType(DataType.Date)]
+      [Display(Name = "Fecha de alta")]
+      public DateTime? FechaAlta { get; set; }
+
+
     }
 
 
@@ -138,15 +175,30 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
     }
 
     public async Task<IActionResult> OnPostAsync(string returnUrl = null)
-    {
-      returnUrl ??= Url.Content("~/");
-      ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+                    {
+                      returnUrl ??= Url.Content("~/");
+                      ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
       if (ModelState.IsValid)
       {
-        var user = CreateUser();
+        var ultimoNumeroCliente = await _context.Cliente.MaxAsync(c => c.NumeroCliente);
+        if (ultimoNumeroCliente == null)
+        {
+          ultimoNumeroCliente = 0;
+        }
+        var user = new Cliente
+        {
+          Nombre = Input.Nombre,
+          Apellido = Input.Apellido,
+          Direccion = Input.Direccion,
+          Telefono = Input.Telefono,
+          FechaNacimiento = Input.FechaNacimiento,
+          Email = Input.Email,
+          NumeroCliente = ultimoNumeroCliente + 1,
+        };
 
         await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+        
         var result = await _userManager.CreateAsync(user, Input.Password);
 
         if (result.Succeeded)
@@ -169,12 +221,12 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
     {
       try
       {
-        return Activator.CreateInstance<IdentityUser>();
+        return Activator.CreateInstance<Usuario>();
       }
       catch
       {
-        throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-            $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+        throw new InvalidOperationException($"Can't create an instance of '{nameof(Usuario)}'. " +
+            $"Ensure that '{nameof(Usuario)}' is not an abstract class and has a parameterless constructor, or alternatively " +
             $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
       }
     }

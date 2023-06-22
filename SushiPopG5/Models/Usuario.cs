@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using SushiPopG5.Utils;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace SushiPopG5.Models
 {
-    public class Usuario
+    [Table("T_USUARIO")]
+    public class Usuario : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido) ]
         [MaxLength(30, ErrorMessage = ErrorMsg.ErrorMaxCaracteres)]
         [MinLength(2, ErrorMessage = ErrorMsg.ErrorMinCaracteres)]

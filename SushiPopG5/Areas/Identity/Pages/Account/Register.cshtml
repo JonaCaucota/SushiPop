@@ -27,6 +27,32 @@
                 <label asp-for="Input.ConfirmPassword"></label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            <div class="form-floating">
+                <label asp-for="Input.Nombre"  class="control-label"></label>
+                <input asp-for="Input.Nombre" asp-controller="Clientes" class="form-control" />
+                <span asp-validation-for="Input.Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <label asp-for="Input.Apellido"  class="control-label"></label>
+                <input asp-for="Input.Apellido" asp-controller="Clientes" class="form-control" />
+                <span asp-validation-for="Input.Apellido" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <label asp-for="Input.Direccion"  class="control-label"></label>
+                <input asp-for="Input.Direccion" asp-controller="Clientes" class="form-control" />
+                <span asp-validation-for="Input.Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <label asp-for="Input.Telefono"  class="control-label"></label>
+                <input asp-for="Input.Telefono" asp-controller="Clientes" class="form-control" />
+                <span asp-validation-for="Input.Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-floating">
+                <label asp-for="Input.FechaNacimiento"  class="control-label"></label>
+                <input asp-for="Input.FechaNacimiento" asp-controller="Clientes" class="form-control" />
+                <span asp-validation-for="Input.FechaNacimiento" class="text-danger"></span>
+            </div>
+            
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

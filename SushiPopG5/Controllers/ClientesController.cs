@@ -35,7 +35,7 @@ namespace SushiPopG5.Controllers
             }
 
             var cliente = await _context.Cliente
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (cliente == null)
             {
                 return NotFound();
@@ -89,7 +89,7 @@ namespace SushiPopG5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("NumeroCliente,Id,Nombre,Apellido,Direccion,Telefono,FechaNacimiento,FechaAlta,Activo,Email")] Cliente cliente)
         {
-            if (id != cliente.Id)
+            if (id.ToString() != cliente.Id)
             {
                 return NotFound();
             }
@@ -126,7 +126,7 @@ namespace SushiPopG5.Controllers
             }
 
             var cliente = await _context.Cliente
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (cliente == null)
             {
                 return NotFound();
@@ -154,9 +154,9 @@ namespace SushiPopG5.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClienteExists(int id)
+        private bool ClienteExists(string id)
         {
-          return (_context.Cliente?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Cliente?.Any(e => e.Id.Equals(id))).GetValueOrDefault();
         }
     }
 }

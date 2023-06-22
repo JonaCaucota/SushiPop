@@ -22,7 +22,11 @@ namespace SushiPopG5.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-              return _context.Producto != null ? 
+            if (User.IsInRole("EMPLEADO") || User.IsInRole("ADMIN"))
+            {
+                ViewData["ESEMPLEADO"] = true;
+            }
+            return _context.Producto != null ? 
                           View(await _context.Producto.ToListAsync()) :
                           Problem("Entity set 'DbContext.Producto'  is null.");
         }
@@ -69,6 +73,7 @@ namespace SushiPopG5.Controllers
                     var categoria = await _context.Categoria.FirstOrDefaultAsync(m => m.Id == producto.CategoriaId);
                     producto.Categoria = categoria;
                 }
+
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
