@@ -47,6 +47,8 @@
                             <span asp-validation-for="Local" class="text-danger"></span>
                         </div>
                     </div>
+
+                    <input type="hidden" asp-for="ClienteId" value="@ViewData["ClienteId"]" readonly />
                     
                     <div class="form-group row justify-content-start p-3">
                         <div class="col-6 text-center">

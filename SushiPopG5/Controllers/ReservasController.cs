@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
@@ -25,9 +19,9 @@ namespace SushiPopG5.Controllers
         // GET: Reservas
         public async Task<IActionResult> Index()
         {
-              return _context.Reserva != null ? 
-                          View(await _context.Reserva.ToListAsync()) :
-                          Problem("Entity set 'DbContext.Reserva'  is null.");
+            return _context.Reserva != null ?
+                        View(await _context.Reserva.ToListAsync()) :
+                        Problem("Entity set 'DbContext.Reserva'  is null.");
         }
 
         // GET: Reservas/Details/5
@@ -57,14 +51,19 @@ namespace SushiPopG5.Controllers
             var user = await _context.Usuario.FirstOrDefaultAsync(x => x.Email.ToUpper().Equals(usuarioLogeado.Email.ToUpper()));
             string nombre = "";
             string apellido = "";
+            string clienteId = "";
+
             if (user != null)
             {
                 nombre = user.Nombre;
                 apellido = user.Apellido;
+                clienteId = user.Id;
             }
+
 
             ViewData["Nombre"] = nombre;
             ViewData["Apellido"] = apellido;
+            ViewData["ClienteId"] = clienteId;
             return View();
         }
 
@@ -74,8 +73,29 @@ namespace SushiPopG5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "CLIENTE, ADMIN")]
-        public async Task<IActionResult> Create([Bind("Id,Local,FechaYHora")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("Id,Local,FechaYHora,ClienteId")] Reserva reserva)
         {
+            if (_context.Reserva == null)
+            {
+                return Problem("Entity set 'DbContext.Producto' is null.");
+            }
+
+            bool hayReservaMismoDia = await _context.Reserva.AnyAsync(r => r.ClienteId == reserva.ClienteId && r.FechaYHora.Date == reserva.FechaYHora.Date);
+
+            if (hayReservaMismoDia)
+            {
+                string usuarioId = _userManager.GetUserId(User);
+                var usuario = await _context.Usuario.FindAsync(usuarioId);
+                if (usuario != null)
+                {
+                    ViewData["Nombre"] = usuario.Nombre;
+                    ViewData["Apellido"] = usuario.Apellido;
+                    ViewData["ClienteId"] = usuario.Id;
+                }
+                ModelState.AddModelError("FechaYHora", "Ya hiciste una reserva para este dia.");
+                return View(reserva);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(reserva);
@@ -172,15 +192,15 @@ namespace SushiPopG5.Controllers
             {
                 _context.Reserva.Remove(reserva);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        
+
 
         private bool ReservaExists(int id)
         {
-          return (_context.Reserva?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Reserva?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

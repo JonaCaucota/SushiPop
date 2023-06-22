@@ -79,6 +79,11 @@ namespace SushiPopG5.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            
+            if (_context.Producto == null)
+            {
+                return Problem("Entity set 'DbContext.Descuento'  is null.");
+            }
 
             var productos = await _context.Producto.ToListAsync();
             ViewData["Productos"] = new SelectList(productos, "Id", "Nombre");
