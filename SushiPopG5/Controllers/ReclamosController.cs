@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace SushiPopG5.Controllers
 {
     public class ReclamosController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ReclamosController(DbContext context)
+        public ReclamosController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Reclamos
         [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
-              return _context.Reclamo != null ? 
-                          View(await _context.Reclamo.ToListAsync()) :
-                          Problem("Entity set 'DbContext.Reclamo'  is null.");
+            return _context.Reclamo != null ?
+                        View(await _context.Reclamo.ToListAsync()) :
+                        Problem("Entity set 'DbContext.Reclamo'  is null.");
         }
 
         // GET: Reclamos/Details/5
@@ -49,8 +48,26 @@ namespace SushiPopG5.Controllers
 
         // GET: Reclamos/Create
         [Authorize(Roles = "CLIENTE, ADMIN, EMPLEADO")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            string emailUsuario = "";
+            string numeroTelefonoUsuario = "";
+            string nombreUsuario = "";
+            string usuarioId = _userManager.GetUserId(User);
+
+            var usuario = await _context.Usuario.FindAsync(usuarioId);
+
+            if (usuario != null)
+            {
+                emailUsuario = usuario.UserName;
+                numeroTelefonoUsuario = usuario.Telefono;
+                nombreUsuario = usuario.Nombre + " " + usuario.Apellido;
+            }
+
+            ViewBag.EmailUsuario = emailUsuario;
+            ViewBag.NumeroTelefonoUsuario = numeroTelefonoUsuario;
+            ViewBag.NombreUsuario = nombreUsuario;
+
             return View();
         }
 
@@ -64,8 +81,7 @@ namespace SushiPopG5.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool pedidoExists = reclamo.Pedido != null;
-                if (pedidoExists)
+                if (reclamo.Pedido != null)
                 {
                     int id = reclamo.Pedido.Id;
                     if (NumPedidoExists(id))
@@ -76,7 +92,7 @@ namespace SushiPopG5.Controllers
                     }
                 }
                 string mensajeError = "Error, el numero de pedido no existe, ingrese uno correcto";
-                TempData["ErrorMessage"] = mensajeError;   
+                TempData["ErrorMessage"] = mensajeError;
             }
             return View(reclamo);
         }
@@ -168,14 +184,14 @@ namespace SushiPopG5.Controllers
             {
                 _context.Reclamo.Remove(reclamo);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReclamoExists(int id)
         {
-          return (_context.Reclamo?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Reclamo?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         private bool NumPedidoExists(int numPedido)

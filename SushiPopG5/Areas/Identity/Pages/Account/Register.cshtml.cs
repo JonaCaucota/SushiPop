@@ -160,9 +160,17 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
 
       //
       //
-      IdentityUser user = CreateUser();
       string email, usuario;
       email = usuario = "admin@ort.edu.ar";
+      Usuario user = new Usuario
+        {
+          Nombre = "Admin",
+          Apellido = "Admin",
+          Direccion = "Foobar 123",
+          Telefono = "3431232142",
+          Email = email,
+        };
+
       await _userStore.SetUserNameAsync(user, email, CancellationToken.None);
       await _emailStore.SetEmailAsync(user, usuario, CancellationToken.None);
       var result = await _userManager.CreateAsync(user, "Password1!");
@@ -217,7 +225,7 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
       return Page();
     }
 
-    private IdentityUser CreateUser()
+    private Usuario CreateUser()
     {
       try
       {
