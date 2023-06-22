@@ -19,10 +19,10 @@ namespace SushiPopG5.Models
         public string Local { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        [Display(Name = "Feceha y hora")]
+        [Display(Name = "Fecha y hora")]
         public DateTime FechaYHora { get; set; }
         
-        public bool? Confirmada { get; set; }
+        public bool Confirmada { get; set; } = false;
 
     }
 }

@@ -17,6 +17,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reservas
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Index()
         {
             return _context.Reserva != null ?
@@ -44,7 +45,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reservas/Create
-        [Authorize(Roles = "CLIENTE, ADMIN")]
+        [Authorize(Roles = "CLIENTE")]
         public async Task<IActionResult> Create()
         {
             var usuarioLogeado = await _userManager.GetUserAsync(User);
@@ -100,7 +101,7 @@ namespace SushiPopG5.Controllers
             {
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(reserva);
         }
@@ -128,7 +129,7 @@ namespace SushiPopG5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "EMPLEADO, ADMIN")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Local,FechaYHora,Confirmada")] Reserva reserva)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Local,FechaYHora,Confirmada,ClienteId")] Reserva reserva)
         {
             if (id != reserva.Id)
             {
