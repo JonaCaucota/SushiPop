@@ -23,9 +23,9 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: CarritoItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index( )
         {
-              return _context.CarritoItem != null ? 
+            return _context.CarritoItem != null ? 
                           View(await _context.CarritoItem.ToListAsync()) :
                           Problem("Entity set 'DbContext.CarritoItem'  is null.");
         }
@@ -120,7 +120,7 @@ namespace SushiPopG5.Controllers
                 carritoItem.Cantidad = 1;
                 carritoItem.CarritoId = carritoCliente.Id;
                 carritoItem.ProductoId = producto.Id;
-
+                carritoItem.NombreProducto = producto.Nombre;
                 _context.Add(carritoItem);
                 await _context.SaveChangesAsync();
             }
@@ -135,23 +135,7 @@ namespace SushiPopG5.Controllers
 
 
 
-            return View();
-        }
-
-        // POST: CarritoItems/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Precio,Cantidad")] CarritoItem carritoItem)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(carritoItem);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(carritoItem);
+            return RedirectToAction("Index");
         }
 
         // GET: CarritoItems/Edit/5
@@ -246,5 +230,6 @@ namespace SushiPopG5.Controllers
         {
           return (_context.CarritoItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+        
     }
 }
