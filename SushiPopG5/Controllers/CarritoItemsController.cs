@@ -84,10 +84,7 @@ namespace SushiPopG5.Controllers
                 .FirstOrDefaultAsync();
 
             //Antes de agregar un item hay que verificar que exista un carrito
-            var carritoCliente = await _context.Carrito
-                .Include(x => x.Cliente)
-                .Include(x => x.CarritoItems)
-                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+            var carritoCliente = await obtenerCarrito(user);
 
             if (carritoCliente == null)
             {
@@ -112,21 +109,7 @@ namespace SushiPopG5.Controllers
             var descuento = await _context.Descuento.Where(x => x.ProductoId == producto.Id && x.Activo == true)
                 .FirstOrDefaultAsync();
 
-            if (descuento != null)
-            {
-                var descuentoAplicar = (1 - descuento.Porcentaje / 100);
-
-                if (descuento.DescuentoMax <= descuentoAplicar)
-                {
-                    precioProducto = precioProducto * descuentoAplicar;
-                }
-                else
-                {
-                    precioProducto -= descuento.DescuentoMax;
-                }
-                
-                precioProducto = precioProducto * (1 - descuento.Porcentaje / 100);
-            }
+            precioProducto = CalcularPrecioProductoDescuento(descuento, precioProducto);
 
             var itemBuscado = await _context.CarritoItem.Where(x => x.CarritoId == carritoCliente.Id && x.ProductoId == producto.Id).FirstOrDefaultAsync();
 
@@ -149,9 +132,7 @@ namespace SushiPopG5.Controllers
                 _context.Update(itemBuscado);
                 await _context.SaveChangesAsync();
             }
-
-
-
+            
             return RedirectToAction("Index");
         }
 
@@ -226,34 +207,112 @@ namespace SushiPopG5.Controllers
         public async Task<IActionResult> BorrarCarrito()
         {
             var user = await _userManager.GetUserAsync(User);
-            var carritoCliente = await _context.Carrito
-                .Include(x => x.Cliente)
-                .Include(x => x.CarritoItems)
-                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+            var carritoCliente = await obtenerCarrito(user);
 
             carritoCliente.Cancelado = true;
             await _context.SaveChangesAsync();
             
             return RedirectToAction(nameof(Index), controllerName:"Home");
         }
-
+        
+        
         public async Task<IActionResult> ComprarCarrito()
         {
             var user = await _userManager.GetUserAsync(User);
-            var carritoCliente = await _context.Carrito
-                .Include(x => x.Cliente)
-                .Include(x => x.CarritoItems)
-                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+            var carritoCliente = await obtenerCarrito(user);
+            decimal subtotal = await CalcularSubTotal(carritoCliente);
+            
+            //Calcular Gasto de envio consultando a la api (Deuda tecnica)
+            decimal costoEnvio = 80;
+            
+            //Falta ver el dia
+            int dia = 6;
+            var descuento = await _context.Descuento.Where(x => x.Activo == true)
+                .FirstOrDefaultAsync();
+
+            
+            Pedido pedido = new Pedido();
+            pedido.NroPedido = obtenerNumeroDePedido();
+            pedido.Fecha = DateTime.Now;
+            pedido.CarritoId = carritoCliente.Id;
+            pedido.ClienteId = user.Id;
+            pedido.Subtotal = subtotal;
+            pedido.Descuento = descuento == null ? 0 : descuento.Porcentaje;
+            pedido.GastoEnvio = costoEnvio;
+            pedido.Total = subtotal + costoEnvio;
+            pedido.Estado = 1;
+            pedido.Carrito = carritoCliente;
 
             carritoCliente.Procesado = true;
             await _context.SaveChangesAsync();
+            await crearPedido(pedido);
             
-            return RedirectToAction(nameof(Index), controllerName:"Home");
+            return RedirectToAction("Index", "Pedidos");
+
+        }
+
+        private async Task<IActionResult> crearPedido (Pedido pedido)
+        {
+            _context.Add(pedido);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CarritoItemExists(int id)
         {
           return (_context.CarritoItem?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        private async Task<Carrito> obtenerCarrito(IdentityUser user)
+        {
+            return await _context.Carrito
+                .Include(x => x.Cliente)
+                .Include(x => x.CarritoItems)
+                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+        }
+
+        private int obtenerNumeroDePedido()
+        {
+            int numPedidoBase = 30000;
+            
+            int? ultimoNumPedido = _context.Pedido.OrderByDescending(p => p.Id).Select(p => p.NroPedido).FirstOrDefault();
+
+            int numPedido = ultimoNumPedido.HasValue ? ultimoNumPedido.Value + 5 : numPedidoBase;
+
+            return numPedido;
+        }
+
+        private async Task<decimal> CalcularSubTotal(Carrito carrito)
+        {
+            decimal subtotal = 0;
+            foreach (var producto in carrito.CarritoItems)
+            {
+                var productoBuscado = await _context.Producto.FindAsync(producto.ProductoId);
+                subtotal += productoBuscado.Precio;
+            }
+
+            return subtotal;
+        }
+
+        private decimal CalcularPrecioProductoDescuento(Descuento descuento,decimal precioProducto)
+        {
+            if (descuento != null)
+            {
+                var descuentoAplicar = (1 - descuento.Porcentaje / 100);
+
+                if (descuento.DescuentoMax <= descuentoAplicar)
+                {
+                    precioProducto = precioProducto * descuentoAplicar;
+                }
+                else
+                {
+                    precioProducto -= descuento.DescuentoMax;
+                }
+                
+                precioProducto = precioProducto * (1 - descuento.Porcentaje / 100);
+            }
+
+            return precioProducto;
         }
         
     }
