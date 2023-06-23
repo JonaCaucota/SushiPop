@@ -28,8 +28,7 @@ namespace SushiPopG5.Models
         public string Mensaje { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        [Display(Name = "Leído")]
-        public bool Leido { get; set; } = false;
+        [Display(Name = "Leído")] public bool Leido { get; set; }
 
     
     }
