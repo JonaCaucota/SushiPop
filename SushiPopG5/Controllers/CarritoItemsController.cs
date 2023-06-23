@@ -201,28 +201,8 @@ namespace SushiPopG5.Controllers
             }
             return View(carritoItem);
         }
-
-        // GET: CarritoItems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.CarritoItem == null)
-            {
-                return NotFound();
-            }
-
-            var carritoItem = await _context.CarritoItem
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (carritoItem == null)
-            {
-                return NotFound();
-            }
-
-            return View(carritoItem);
-        }
-
-        // POST: CarritoItems/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.CarritoItem == null)
