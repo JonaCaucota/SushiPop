@@ -45,7 +45,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Reservas/Create
-        [Authorize(Roles = "CLIENTE")]
+        [Authorize(Roles = "CLIENTE, ADMIN")]
         public async Task<IActionResult> Create()
         {
             var usuarioLogeado = await _userManager.GetUserAsync(User);

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SushiPopG5.Models
 {
-    [Table("T_CARRITO ITEM")]
+    [Table("T_CARRITO_ITEM")]
     public class CarritoItem
     {
         [Key]
@@ -19,7 +19,7 @@ namespace SushiPopG5.Models
         [ForeignKey("ProductoId")]
         public Producto? Producto { get; set; }
         
-        public double Precio { get; set; }
+        public decimal Precio { get; set; }
         
         public int Cantidad { get; set; }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +13,13 @@ namespace SushiPopG5.Controllers
     public class CarritoItemsController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CarritoItemsController(DbContext context)
+        public CarritoItemsController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: CarritoItems
@@ -45,8 +49,92 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: CarritoItems/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? id)
         {
+            if (id == null) { }
+
+            var producto = await _context.Producto.FindAsync(id);
+
+            if (producto == null) { }
+            
+            var user = await _userManager.GetUserAsync(User);
+            
+            if(user == null){}
+            
+            // Si el usuario no es nulo
+
+            var cliente = await _context.Cliente.Where(x => x.Email.ToUpper() == user.NormalizedEmail)
+                .FirstOrDefaultAsync();
+
+            //Antes de agregar un item hay que verificar que exista un carrito
+            var carritoCliente = await _context.Carrito
+                .Include(x => x.Cliente)
+                .Include(x => x.CarritoItems)
+                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+
+            if (carritoCliente == null)
+            {
+                Carrito carrito = new Carrito();
+                carrito.Procesado = false;
+                carrito.Cancelado = false;
+                carrito.ClienteId = cliente.Id;
+                _context.Add(carrito);
+                await _context.SaveChangesAsync();
+
+                carritoCliente = await _context.Carrito
+                    .Include(x => x.Cliente)
+                    .Include(x => x.CarritoItems)
+                    .OrderByDescending(x => x.Id)
+                    .FirstOrDefaultAsync();
+            }
+
+            var precioProducto = producto.Precio;
+            
+            //Falta ver el dia
+            int dia = 6;
+            var descuento = await _context.Descuento.Where(x => x.ProductoId == producto.Id && x.Activo == true)
+                .FirstOrDefaultAsync();
+
+            if (descuento != null)
+            {
+                var descuentoAplicar = (1 - descuento.Porcentaje / 100);
+
+                if (descuento.DescuentoMax <= descuentoAplicar)
+                {
+                    precioProducto = precioProducto * descuentoAplicar;
+                }
+                else
+                {
+                    precioProducto -= descuento.DescuentoMax;
+                }
+                
+                precioProducto = precioProducto * (1 - descuento.Porcentaje / 100);
+            }
+
+            var itemBuscado = await _context.CarritoItem.Where(x => x.CarritoId == carritoCliente.Id && x.ProductoId == producto.Id).FirstOrDefaultAsync();
+
+            if (itemBuscado == null)
+            {
+                CarritoItem carritoItem = new CarritoItem();
+                carritoItem.Precio = precioProducto;
+                carritoItem.Cantidad = 1;
+                carritoItem.CarritoId = carritoCliente.Id;
+                carritoItem.ProductoId = producto.Id;
+
+                _context.Add(carritoItem);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                //Validar cantidad de stock
+                
+                itemBuscado.Cantidad += 1;
+                _context.Update(itemBuscado);
+                await _context.SaveChangesAsync();
+            }
+
+
+
             return View();
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace SushiPopG5.Controllers
     public class CarritosController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public CarritosController(DbContext context)
+        public CarritosController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Carritos
@@ -47,7 +50,7 @@ namespace SushiPopG5.Controllers
 
         // GET: Carritos/Create
         [Authorize(Roles = "CLIENTE")]
-        public IActionResult Create()
+        public  IActionResult Create()
         {
             return View();
         }

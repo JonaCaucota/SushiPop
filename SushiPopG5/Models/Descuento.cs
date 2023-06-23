@@ -16,10 +16,10 @@ namespace SushiPopG5.Models
         public DateTime Dia { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public double Porcentaje { get; set; }
+        public decimal Porcentaje { get; set; }
 
         [Display(Name = "Descuento maximo")]
-        public double? DescuentoMax { get; set; }
+        public decimal DescuentoMax { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Activo { get; set; } = true;
