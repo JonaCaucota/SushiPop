@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,11 +24,22 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: CarritoItems
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> Index( )
         {
-            return _context.CarritoItem != null ? 
-                          View(await _context.CarritoItem.ToListAsync()) :
-                          Problem("Entity set 'DbContext.CarritoItem'  is null.");
+            var user = await _userManager.GetUserAsync(User);
+            var carritoCliente = await _context.Carrito
+                .Include(x => x.Cliente)
+                .Include(x => x.CarritoItems)
+                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+
+            if (carritoCliente == null)
+            {
+                return RedirectToAction("Index", controllerName:"Home");
+            }
+
+            return View(carritoCliente.CarritoItems);
+
         }
 
         // GET: CarritoItems/Details/5
@@ -49,6 +61,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: CarritoItems/Create
+        [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> Create(int? id)
         {
             if (id == null) { }
@@ -224,6 +237,20 @@ namespace SushiPopG5.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> borrarCarrito()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var carritoCliente = await _context.Carrito
+                .Include(x => x.Cliente)
+                .Include(x => x.CarritoItems)
+                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+
+            carritoCliente.Cancelado = true;
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index), controllerName:"Home");
         }
 
         private bool CarritoItemExists(int id)
