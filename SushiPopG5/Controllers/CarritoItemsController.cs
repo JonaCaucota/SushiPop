@@ -32,12 +32,16 @@ namespace SushiPopG5.Controllers
                 .Include(x => x.Cliente)
                 .Include(x => x.CarritoItems)
                 .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
-
+            
+            
             if (carritoCliente == null)
             {
                 return RedirectToAction("Index", controllerName:"Home");
             }
-
+            if (carritoCliente.CarritoItems.Count == 0)
+            {
+                return RedirectToAction("Index", controllerName:"Home");
+            }
             return View(carritoCliente.CarritoItems);
 
         }
@@ -219,7 +223,7 @@ namespace SushiPopG5.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> borrarCarrito()
+        public async Task<IActionResult> BorrarCarrito()
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await _context.Carrito
@@ -228,6 +232,20 @@ namespace SushiPopG5.Controllers
                 .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
 
             carritoCliente.Cancelado = true;
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction(nameof(Index), controllerName:"Home");
+        }
+
+        public async Task<IActionResult> ComprarCarrito()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var carritoCliente = await _context.Carrito
+                .Include(x => x.Cliente)
+                .Include(x => x.CarritoItems)
+                .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
+
+            carritoCliente.Procesado = true;
             await _context.SaveChangesAsync();
             
             return RedirectToAction(nameof(Index), controllerName:"Home");
