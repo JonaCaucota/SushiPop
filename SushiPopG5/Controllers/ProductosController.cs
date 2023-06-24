@@ -83,6 +83,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Productos/Edit/5
+        [Authorize(Roles = "EMPLEADO")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Producto == null)
