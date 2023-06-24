@@ -210,8 +210,6 @@ namespace SushiPopG5.Controllers
             return RedirectToAction(nameof(Index), controllerName:"Home");
         }
         
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ComprarCarrito(bool confirmado)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -265,6 +263,12 @@ namespace SushiPopG5.Controllers
         public async Task<IActionResult> NoCrearPedido()
         {
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmarPedido(bool confirmado)
+        {
+            return await ComprarCarrito(confirmado);
         }
 
         private bool CarritoItemExists(int id)

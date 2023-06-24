@@ -56,12 +56,11 @@
 </table>
 <a class="btn bg-danger" asp-action="NoCrearPedido" asp-controller="CarritoItems"> Cancelar </a>
 
-
-@using (Html.BeginForm("ComprarCarrito", "CarritoItems", FormMethod.Post))
-{
+<form asp-action="ConfirmarPedido">
     <input type="hidden" name="confirmado" value="true" />
-    <input type="submit" class="btn bg-primary" value="Finalizar" />
-}
+    <input type="submit" class="btn bg-primary" value="Finalizar"/>
+</form>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

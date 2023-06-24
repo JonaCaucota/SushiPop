@@ -8,8 +8,6 @@ builder.Services.AddDbContext<DbContext>(options =>
 }
 );
 
-
-
 builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<DbContext>();
 
 // Add services to the container.

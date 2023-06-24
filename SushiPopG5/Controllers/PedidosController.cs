@@ -47,30 +47,6 @@ namespace SushiPopG5.Controllers
             return View(pedido);
         }
 
-        // GET: Pedidos/Create
-        [Authorize(Roles = "CLIENTE, ADMIN")]
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Pedidos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "CLIENTE, ADMIN")]
-        public async Task<IActionResult> Create([Bind("Id,NroPedido,Fecha,Subtotal,Descuento,GastoEnvio,Total,Estado")] Pedido pedido)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(pedido);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(pedido);
-        }
-
         // GET: Pedidos/Edit/5
         [Authorize(Roles = "CLIENTE, ADMIN")]
         public async Task<IActionResult> Edit(int? id)
