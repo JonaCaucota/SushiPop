@@ -188,6 +188,8 @@ namespace SushiPopG5.Areas.Identity.Pages.Account
             {
                 await _userManager.AddToRoleAsync(user, "ADMIN");
             }
+            
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

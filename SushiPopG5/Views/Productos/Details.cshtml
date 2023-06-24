@@ -3,53 +3,29 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Producto</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Descripcion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Costo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Costo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Foto)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Foto)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stock)
-        </dd>
-    </dl>
+<div style="text-align: center;">
+<h1>Productos</h1>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-    <a asp-controller="CarritoItems" asp-action="Create" asp-route-Id="@Model?.Id" class="btn btn-warning text-white">Add Producto</a>
+
+
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
+    <img src="@Model.Foto" alt="Producto" width="200" height="200" style="float: left; margin-right: 20px;" />
+    <div style="float: left;">
+        <h4>@Model.Nombre</h4>
+        <div style="margin-top: 10px;">
+            <p>@Model.Descripcion</p>
+        </div>
+        <div style="display: flex; align-items: center;">
+            @if (Model.Stock > 0)
+            {
+                <p style="margin-right: 10px;">Precio: @Model.Precio</p>
+                <a asp-controller="CarritoItems" asp-action="Create" asp-route-Id="@Model?.Id" class="btn btn-warning text-white">Agregar al Carrito</a>
+            } else
+            {
+                <p style="text-decoration: line-through; margin-right: 10px;">Precio: @Model.Precio</p>
+                <p style="color: red;">Producto sin stock</p>
+            }
+            
+        </div>
+    </div>
 </div>
