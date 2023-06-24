@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
@@ -215,8 +210,9 @@ namespace SushiPopG5.Controllers
             return RedirectToAction(nameof(Index), controllerName:"Home");
         }
         
-        
-        public async Task<IActionResult> ComprarCarrito()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ComprarCarrito(bool confirmado)
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await obtenerCarrito(user);
@@ -243,18 +239,31 @@ namespace SushiPopG5.Controllers
             pedido.Estado = 1;
             pedido.Carrito = carritoCliente;
 
-            carritoCliente.Procesado = true;
-            await _context.SaveChangesAsync();
-            await crearPedido(pedido);
-            
-            return RedirectToAction("Index", "Pedidos");
+            if (confirmado == false)
+            {
+                return await MostrarPedido(pedido);
+            }
+
+            return await CrearPedido(pedido, carritoCliente);
 
         }
 
-        private async Task<IActionResult> crearPedido (Pedido pedido)
+        public async Task<IActionResult> MostrarPedido(Pedido pedido)
+        {
+            return View("MostrarPedido", pedido );
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearPedido (Pedido pedido, Carrito carrito)
         {
             _context.Add(pedido);
+            carrito.Procesado = true;
             await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Pedidos");
+        }
+
+        public async Task<IActionResult> NoCrearPedido()
+        {
             return RedirectToAction(nameof(Index));
         }
 

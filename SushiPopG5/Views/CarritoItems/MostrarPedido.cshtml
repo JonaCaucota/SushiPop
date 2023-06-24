@@ -1,0 +1,68 @@
+@model Pedido
+
+<h1>Pedido</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NroPedido)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subtotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descuento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GastoEnvio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.NroPedido)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Fecha)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Subtotal)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Descuento)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.GastoEnvio)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Estado)
+            </td>
+        </tr>
+    </tbody>
+</table>
+<a class="btn bg-danger" asp-action="NoCrearPedido" asp-controller="CarritoItems"> Cancelar </a>
+
+
+@using (Html.BeginForm("ComprarCarrito", "CarritoItems", FormMethod.Post))
+{
+    <input type="hidden" name="confirmado" value="true" />
+    <input type="submit" class="btn bg-primary" value="Finalizar" />
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
