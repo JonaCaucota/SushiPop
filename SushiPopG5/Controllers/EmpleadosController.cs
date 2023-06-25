@@ -20,6 +20,7 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: Empleados
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Index()
         {
               return _context.Empleado != null ? 
