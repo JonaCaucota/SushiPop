@@ -1,4 +1,6 @@
-﻿@model IEnumerable<SushiPopG5.Models.Pedido>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<SushiPopG5.Utils.PedidoUsuarioViewModel>
+
 <div class="row text-center">
     <h1>Pedidos</h1>
 </div>
@@ -6,61 +8,60 @@
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NroPedido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subtotal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descuento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GastoEnvio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.NroPedido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.Fecha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Nombre)
+            @Html.DisplayNameFor(model => model.Usuario.Apellido)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pedido.Estado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CarritoItems )
+        </th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NroPedido)
+                @Html.DisplayFor(modelItem => item.Pedido.NroPedido)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
+                @Html.DisplayFor(modelItem => item.Pedido.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Subtotal)
+                @Html.DisplayFor(modelItem => item.Usuario.Nombre)
+                @Html.DisplayFor(modelItem => item.Usuario.Apellido)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Descuento)
+                $@Html.DisplayFor(modelItem => item.Pedido.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GastoEnvio)
+                @Html.DisplayFor(modelItem => item.Pedido.Estado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Total)
+                @foreach (var item2 in item.CarritoItems)
+                    {
+                         @Html.DisplayFor(modelItem => item2.NombreProducto  )
+                        <span style="white-space: pre;">,</span>
+                    }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Estado)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Pedido.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Pedido.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Pedido.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

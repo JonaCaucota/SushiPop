@@ -271,7 +271,8 @@ namespace SushiPopG5.Controllers
                 pedidoProductoViewModel.Usuario = await _context.Usuario.FindAsync(user.Id);
                 return await MostrarPedido(pedidoProductoViewModel);
             }
-
+            
+            await _context.SaveChangesAsync();
             return await CrearPedido(pedido, carritoCliente);
 
         }
@@ -285,7 +286,9 @@ namespace SushiPopG5.Controllers
         public async Task<IActionResult> CrearPedido(Pedido pedido, Carrito carrito)
         {
             _context.Add(pedido);
+            await _context.SaveChangesAsync();
             carrito.Procesado = true;
+            carrito.PedidoId = pedido.Id;
             await _context.SaveChangesAsync();
             return RedirectToAction("Index", "Pedidos");
         }

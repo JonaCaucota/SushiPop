@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
+using SushiPopG5.Utils;
 
 namespace SushiPopG5.Controllers
 {
@@ -28,11 +29,23 @@ namespace SushiPopG5.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var pedidosDeUsuario = await _context.Pedido.Where(p => p.ClienteId.Equals(user.Id)).ToListAsync();
+            Usuario usuario = await _context.Usuario.FindAsync(user.Id);
+            var todosLosPedidosDeUnUsuario = await _context.Pedido.Where(p => p.ClienteId.Equals(user.Id)).ToListAsync();
 
-            if (pedidosDeUsuario.Count != 0)
+            if (todosLosPedidosDeUnUsuario.Count != 0)
             {
-                return View(pedidosDeUsuario);
+                List<PedidoUsuarioViewModel> pedidosUsuariosList = new List<PedidoUsuarioViewModel>();
+
+                foreach (var pedido in todosLosPedidosDeUnUsuario)
+                {
+                    PedidoUsuarioViewModel pedidoUsuarioViewModel = new PedidoUsuarioViewModel();
+                    pedidoUsuarioViewModel.Pedido = pedido;
+                    pedidoUsuarioViewModel.CarritoItems =
+                        await _context.CarritoItem.Where(x => x.CarritoId == pedido.CarritoId).ToListAsync();
+                    pedidoUsuarioViewModel.Usuario = usuario;
+                    pedidosUsuariosList.Add(pedidoUsuarioViewModel);
+                }
+                return View(pedidosUsuariosList);
             }
 
             return RedirectToAction("Index", controllerName: "Home");
