@@ -17,16 +17,6 @@ namespace SushiPopG5.Controllers
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
-            return _context.Categoria != null ? 
-                View(await _context.Categoria.ToListAsync()) :
-                Problem("Entity set 'DbContext.Categoria'  is null.");
-        }
-
-        
-        //TODO: Arreglar metodo de categorias con productos filtrados.
-        
-        /*public async Task<IActionResult> Index()
-        {
             if (_context.Categoria == null)
             {
                 return Problem("Entity set 'DbContext.Categoria'  is null.");
@@ -37,7 +27,7 @@ namespace SushiPopG5.Controllers
             var categoriasConProductosFiltradas = categoriasConProductos.Where(c => c.Productos != null && c.Productos.Any());
 
             return View(categoriasConProductosFiltradas);
-        }*/
+        }
         
         
         
