@@ -1,73 +1,42 @@
-@model Pedido
+@model SushiPopG5.Utils.PedidoProductoViewModel
 
-<div class="row">
-    <h1 class="text-center">Pedido</h1>
-    <div class="col-3">
-        
+<div class="row justify-content-center text-center">
+    <h1>Pedido</h1>
+    <div class="col-3 d-flex justify-content-center">
+        @foreach (var producto in Model.Producto)
+        {
+            <div class="d-flex justify-content-center m-3">
+                <div class="card text-center" style="width: 12rem;">
+                    <img src="@producto.Foto" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h4>@producto.Nombre</h4>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
+    <h2>Cliente: @Model.Usuario.Nombre @Model.Usuario.Apellido</h2>
+    <h2>Dirección: @Model.Usuario.Direccion</h2>
+
+    <div class="pt-3">
+        <h2>Subtotal: $@Model.Pedido.Subtotal</h2>
+        <h2>Envío: $@Model.Pedido.GastoEnvio</h2>
+        <h2>Total: $@Model.Pedido.Total</h2>
+    </div>
+    <div class="row text-center justify-content-center">
+        <form asp-action="NoCrearPedido" class="col-2">
+            <input type="hidden" name="confirmado" value="true"/>
+            <input type="submit" class="btn-lg bg-danger" value="Cancelar"/>
+        </form>
+        <form asp-action="ConfirmarPedido" class="col-2">
+            <input type="hidden" name="confirmado" value="true"/>
+            <input type="submit" class="btn-lg bg-primary" value="Finalizar"/>
+        </form>
+    </div>
+
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.NroPedido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fecha)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subtotal)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Descuento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GastoEnvio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                @Html.DisplayFor(model => model.NroPedido)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Subtotal)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Descuento)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.GastoEnvio)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.Estado)
-            </td>
-        </tr>
-    </tbody>
-</table>
-<a class="btn bg-danger" asp-action="NoCrearPedido" asp-controller="CarritoItems"> Cancelar </a>
-
-<form asp-action="ConfirmarPedido">
-    <input type="hidden" name="confirmado" value="true" />
-    <input type="submit" class="btn bg-primary" value="Finalizar"/>
-</form>
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

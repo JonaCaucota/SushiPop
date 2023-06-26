@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
+using SushiPopG5.Utils;
 
 namespace SushiPopG5.Controllers
 {
@@ -94,8 +95,7 @@ namespace SushiPopG5.Controllers
             {
                 return Problem("Cliente es nulo");
             }
-
-            //Antes de agregar un item hay que verificar que exista un carrito
+            
             var carritoCliente = await obtenerCarrito(user);
 
             if (carritoCliente == null)
@@ -234,8 +234,14 @@ namespace SushiPopG5.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await obtenerCarrito(user);
+            var carritoItems = await _context.CarritoItem.Where(x => x.CarritoId == carritoCliente.Id).ToListAsync();
+            List<int> productoIds = carritoItems.Select(x => x.ProductoId).ToList();
+            List<Producto> productos = await _context.Producto
+                .Where(x => productoIds.Contains(x.Id))
+                .ToListAsync();
             decimal subtotal = await CalcularSubTotal(carritoCliente);
-
+            
+            
             //Calcular Gasto de envio consultando a la api (Deuda tecnica)
             decimal costoEnvio = 80;
 
@@ -256,19 +262,23 @@ namespace SushiPopG5.Controllers
             pedido.Total = subtotal + costoEnvio;
             pedido.Estado = 1;
             pedido.Carrito = carritoCliente;
-
+            
             if (confirmado == false)
             {
-                return await MostrarPedido(pedido);
+                PedidoProductoViewModel pedidoProductoViewModel = new PedidoProductoViewModel();
+                pedidoProductoViewModel.Producto = productos;
+                pedidoProductoViewModel.Pedido = pedido;
+                pedidoProductoViewModel.Usuario = await _context.Usuario.FindAsync(user.Id);
+                return await MostrarPedido(pedidoProductoViewModel);
             }
 
             return await CrearPedido(pedido, carritoCliente);
 
         }
 
-        public async Task<IActionResult> MostrarPedido(Pedido pedido)
+        public async Task<IActionResult> MostrarPedido(PedidoProductoViewModel pedidoProductoViewModel)
         {
-            return View("MostrarPedido", pedido);
+            return View("MostrarPedido", pedidoProductoViewModel);
         }
 
         [HttpPost]
