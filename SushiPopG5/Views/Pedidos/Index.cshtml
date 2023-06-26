@@ -15,10 +15,12 @@
         <th>
             @Html.DisplayNameFor(model => model.Pedido.Fecha)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Usuario.Nombre)
-            @Html.DisplayNameFor(model => model.Usuario.Apellido)
-        </th>
+        @if ((bool)ViewData["EsEmpleado"] == true)
+        {
+            <th>
+                Cliente
+            </th>
+        }
         <th>
             @Html.DisplayNameFor(model => model.Pedido.Total)
         </th>
@@ -39,10 +41,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Pedido.Fecha)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.Nombre)
-                @Html.DisplayFor(modelItem => item.Usuario.Apellido)
-            </td>
+            @if ((bool)ViewData["EsEmpleado"] == true)
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.Nombre)
+                    @Html.DisplayFor(modelItem => item.Usuario.Apellido)
+                </td>
+            }
             <td>
                 $@Html.DisplayFor(modelItem => item.Pedido.Total)
             </td>
@@ -59,7 +64,10 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Pedido.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Pedido.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Pedido.Id">Delete</a>
+                @if (item.Pedido.Estado == 1)
+                {
+                    <a asp-action="Delete" asp-route-id="@item.Pedido.Id">Cancelar</a>
+                }
             </td>
         </tr>
     }

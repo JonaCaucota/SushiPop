@@ -45,6 +45,13 @@ namespace SushiPopG5.Controllers
                     pedidoUsuarioViewModel.Usuario = usuario;
                     pedidosUsuariosList.Add(pedidoUsuarioViewModel);
                 }
+                bool esEmpleado = false;
+                if (User.IsInRole("EMPLEADO") || User.IsInRole("ADMIN"))
+                {
+                    esEmpleado = true;
+                }
+                ViewData["EsEmpleado"] = esEmpleado;
+                
                 return View(pedidosUsuariosList);
             }
 
