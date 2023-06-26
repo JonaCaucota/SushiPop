@@ -19,7 +19,8 @@ namespace SushiPopG5.Models
         public decimal Porcentaje { get; set; }
 
         [Display(Name = "Descuento maximo")]
-        public decimal DescuentoMax { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        public decimal DescuentoMax { get; set; } = 1000;
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public bool Activo { get; set; } = true;

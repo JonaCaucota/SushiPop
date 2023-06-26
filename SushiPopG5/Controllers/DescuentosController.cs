@@ -66,11 +66,11 @@ namespace SushiPopG5.Controllers
         [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Create([Bind("Id,Dia,Porcentaje,DescuentoMax,Activo,ProductoId")] Descuento descuento)
         {
-            bool existeDescuento = await _context.Descuento.AnyAsync(d => d.ProductoId == descuento.ProductoId && d.Dia == descuento.Dia);
+            bool existeDescuento = await _context.Descuento.AnyAsync(d => d.ProductoId == descuento.ProductoId && d.Dia == descuento.Dia && d.Activo == true);
 
             if (existeDescuento)
             {
-                ModelState.AddModelError("Dia", "Ya existe un descuento para este producto en el día especificado.");
+                ModelState.AddModelError("Dia", "Ya existe un descuento activo para este producto en el día especificado.");
             }
 
             if (ModelState.IsValid)
@@ -105,6 +105,9 @@ namespace SushiPopG5.Controllers
             {
                 return NotFound();
             }
+
+            ViewData["Productos"] = await _context.Producto.ToListAsync();
+
             return View(descuento);
         }
 
@@ -114,7 +117,7 @@ namespace SushiPopG5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "EMPLEADO, ADMIN")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Dia,Porcentaje,DescuentoMax,Activo")] Descuento descuento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Dia,Porcentaje,DescuentoMax,Activo,ProductoId")] Descuento descuento)
         {
             if (id != descuento.Id)
             {
