@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
@@ -18,7 +13,7 @@ namespace SushiPopG5.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
@@ -33,6 +28,9 @@ namespace SushiPopG5.Controllers
 
             return View(categoriasConProductosFiltradas);
         }
+        
+        
+        
 
         // GET: Categorias/Details/5
         public async Task<IActionResult> Details(int? id)
