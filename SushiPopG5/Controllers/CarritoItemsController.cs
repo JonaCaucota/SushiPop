@@ -128,7 +128,7 @@ namespace SushiPopG5.Controllers
             if (itemBuscado == null)
             {
                 CarritoItem carritoItem = new CarritoItem();
-                carritoItem.Precio = precioProducto;
+                carritoItem.Precio += precioProducto;
                 carritoItem.Cantidad = 1;
                 carritoItem.CarritoId = carritoCliente.Id;
                 carritoItem.ProductoId = producto.Id;
@@ -141,6 +141,7 @@ namespace SushiPopG5.Controllers
             }
             else
             {
+                itemBuscado.Precio += precioProducto;
                 itemBuscado.Cantidad += 1;
                 producto.Stock--;
                 _context.Update(itemBuscado);
