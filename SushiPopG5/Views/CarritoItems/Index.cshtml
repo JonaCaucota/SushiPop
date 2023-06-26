@@ -5,45 +5,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center h3 mb-5">Carrito</h1>
 
 <table class="table">
-    <thead>
-    <tr>
-        <th>
-            Nombre
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.Precio)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cantidad)
-        </th>
-        <th>
-            
-        </th>
-    </tr>
+    <thead class="h2">
+        <tr>
+            <th>
+                Producto
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
+                Foto
+            </th>
+            <th>
+
+            </th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.NombreProducto
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cantidad)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="DeleteConfirmed" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="py-4 h5">
+                    @item.NombreProducto
+                </td>
+                <td class="py-4 h5">
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td class="py-4">
+                    <img src="@item.Producto.Foto" alt="Foto" width="150" height="100">
+                </td>
+                <td class="py-4">
+                    <a class="bi bi-trash3-fill h2 text-dark" asp-action="DeleteConfirmed" asp-route-id="@item.Id"></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

@@ -26,6 +26,7 @@ namespace SushiPopG5.Controllers
             var carritoCliente = await _context.Carrito
                 .Include(x => x.Cliente)
                 .Include(x => x.CarritoItems)
+                .ThenInclude(ci => ci.Producto)
                 .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
 
 
@@ -37,6 +38,10 @@ namespace SushiPopG5.Controllers
             {
                 return RedirectToAction("Index", controllerName: "Home");
             }
+
+            decimal precioTotal = carritoCliente.CarritoItems.Sum(ci => ci.Precio);
+            ViewBag.PrecioTotal = precioTotal;
+
             return View(carritoCliente.CarritoItems);
 
         }
@@ -77,7 +82,8 @@ namespace SushiPopG5.Controllers
 
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null) { 
+            if (user == null)
+            {
                 return Problem("Usuario es null");
             }
 
@@ -86,7 +92,8 @@ namespace SushiPopG5.Controllers
             var cliente = await _context.Cliente.Where(x => x.Email.ToUpper() == user.NormalizedEmail)
                 .FirstOrDefaultAsync();
 
-            if(cliente == null) {
+            if (cliente == null)
+            {
                 return Problem("Cliente es nulo");
             }
 

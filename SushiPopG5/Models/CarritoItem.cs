@@ -19,6 +19,7 @@ namespace SushiPopG5.Models
         [ForeignKey("ProductoId")]
         public Producto? Producto { get; set; }
         
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal Precio { get; set; }
         
         public int Cantidad { get; set; }
