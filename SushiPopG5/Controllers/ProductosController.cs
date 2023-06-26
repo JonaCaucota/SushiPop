@@ -87,21 +87,29 @@ namespace SushiPopG5.Controllers
 
                 var productoExistente = await _context.Producto.FirstOrDefaultAsync(p => p.Nombre == producto.Nombre || p.Foto == producto.Foto);
 
-                if (productoExistente != null)
+                if (productoExistente == null)
                 {
                     if (productoExistente.Nombre == producto.Nombre)
                     {
                         ModelState.AddModelError("Nombre", "Ya existe un producto con el mismo nombre.");
                     }
-                    if (productoExistente.Foto == producto.Foto)
+
+                    if (productoExistente.Foto != null)
                     {
-                        ModelState.AddModelError("Foto", "Ya se está utilizando esta foto para otro producto.");
+                        if (productoExistente.Foto == producto.Foto)
+                        {
+                            ModelState.AddModelError("Foto", "Ya se está utilizando esta foto para otro producto.");
+                        }
                     }
 
                     ViewData["CATEGORIAS"] = await _context.Categoria.ToListAsync();
                     return View(producto);
                 }
-
+                if (producto.Foto == null)
+                {
+                    producto.Foto = "/images/foto_producto_default.png";
+                }
+                
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
