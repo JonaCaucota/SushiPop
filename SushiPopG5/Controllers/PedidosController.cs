@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +14,28 @@ namespace SushiPopG5.Controllers
     public class PedidosController : Controller
     {
         private readonly DbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public PedidosController(DbContext context)
+
+        public PedidosController(DbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Pedidos
         [Authorize(Roles = "CLIENTE, ADMIN")]
         public async Task<IActionResult> Index()
         {
-              return _context.Pedido != null ? 
-                          View(await _context.Pedido.ToListAsync()) :
-                          Problem("Entity set 'DbContext.Pedido'  is null.");
+            var user = await _userManager.GetUserAsync(User);
+            var pedidosDeUsuario = await _context.Pedido.Where(p => p.ClienteId.Equals(user.Id)).ToListAsync();
+
+            if (pedidosDeUsuario.Count != 0)
+            {
+                return View(pedidosDeUsuario);
+            }
+
+            return RedirectToAction("Index", controllerName: "Home");
         }
 
         // GET: Pedidos/Details/5
