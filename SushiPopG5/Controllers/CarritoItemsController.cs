@@ -321,7 +321,7 @@ namespace SushiPopG5.Controllers
             foreach (var producto in carrito.CarritoItems)
             {
                 var productoBuscado = await _context.Producto.FindAsync(producto.ProductoId);
-                subtotal += productoBuscado.Precio;
+                subtotal += productoBuscado.Precio * producto.Cantidad;
             }
 
             return subtotal;
