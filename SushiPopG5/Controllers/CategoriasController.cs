@@ -22,9 +22,16 @@ namespace SushiPopG5.Controllers
         // GET: Categorias
         public async Task<IActionResult> Index()
         {
-              return _context.Categoria != null ? 
-                          View(await _context.Categoria.ToListAsync()) :
-                          Problem("Entity set 'DbContext.Categoria'  is null.");
+            if (_context.Categoria == null)
+            {
+                return Problem("Entity set 'DbContext.Categoria'  is null.");
+            }
+
+            var categoriasConProductos = await _context.Categoria.Include(c => c.Productos).ToListAsync();
+
+            var categoriasConProductosFiltradas = categoriasConProductos.Where(c => c.Productos != null && c.Productos.Any());
+
+            return View(categoriasConProductosFiltradas);
         }
 
         // GET: Categorias/Details/5
@@ -62,7 +69,7 @@ namespace SushiPopG5.Controllers
                 return NotFound();
             }
 
-            return View("Details",categoria);
+            return View("Details", categoria);
         }
 
         // GET: Categorias/Create
@@ -170,21 +177,31 @@ namespace SushiPopG5.Controllers
         {
             if (_context.Categoria == null)
             {
-                return Problem("Entity set 'DbContext.Categoria'  is null.");
+                return Problem("Entity set 'DbContext.Categoria' is null.");
             }
-            var categoria = await _context.Categoria.FindAsync(id);
-            if (categoria != null)
+
+            var categoria = await _context.Categoria.Include(c => c.Productos).FirstOrDefaultAsync(c => c.Id == id);
+
+            if (categoria == null)
             {
-                _context.Categoria.Remove(categoria);
+                return NotFound();
             }
-            
+
+            if (categoria.Productos != null && categoria.Productos.Any())
+            {
+                TempData["ErrorMessage"] = "No se puede eliminar la categoría porque tiene productos asociados.";
+                return RedirectToAction("Delete", new { id = categoria.Id });
+            }
+
+            _context.Categoria.Remove(categoria);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoriaExists(int id)
         {
-          return (_context.Categoria?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Categoria?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
