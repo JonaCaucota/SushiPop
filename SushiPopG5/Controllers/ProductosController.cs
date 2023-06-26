@@ -87,7 +87,7 @@ namespace SushiPopG5.Controllers
 
                 var productoExistente = await _context.Producto.FirstOrDefaultAsync(p => p.Nombre == producto.Nombre || p.Foto == producto.Foto);
 
-                if (productoExistente == null)
+                if (productoExistente != null)
                 {
                     if (productoExistente.Nombre == producto.Nombre)
                     {

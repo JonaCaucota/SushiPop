@@ -146,7 +146,8 @@ namespace SushiPopG5.Controllers
             {
                 return NotFound();
             }
-            var pedido = await _context.Pedido.FindAsync(numeroPedido);
+
+            var pedido = await _context.Pedido.Where(x => x.NroPedido == numeroPedido).FirstOrDefaultAsync();
             if (pedido != null)
             {
                 var estado = pedido.Estado;

@@ -30,17 +30,17 @@ namespace SushiPopG5.Models
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public decimal Subtotal { get; set; }
 
-        public decimal? Descuento { get; set; } = 0;
+        public decimal? Descuento { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         [Display(Name = "Gasto de Envío")]
-        public decimal GastoEnvio { get; set; } = 80;
+        public decimal GastoEnvio { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
         public decimal Total { get; set; }
 
         [Required(ErrorMessage = ErrorMsg.ErrorCampoRequerido)]
-        public double Estado { get; set; } = 1;
+        public double Estado { get; set; }
         
     }
 }

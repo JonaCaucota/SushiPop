@@ -87,8 +87,6 @@ namespace SushiPopG5.Controllers
                 return Problem("Usuario es null");
             }
 
-            // Si el usuario no es nulo
-
             var cliente = await _context.Cliente.Where(x => x.Email.ToUpper() == user.NormalizedEmail)
                 .FirstOrDefaultAsync();
 
@@ -136,14 +134,17 @@ namespace SushiPopG5.Controllers
                 carritoItem.ProductoId = producto.Id;
                 carritoItem.NombreProducto = producto.Nombre;
                 _context.Add(carritoItem);
+
+                producto.Stock--;
+                _context.Update(producto);
                 await _context.SaveChangesAsync();
             }
             else
             {
-                //Validar cantidad de stock
-
                 itemBuscado.Cantidad += 1;
+                producto.Stock--;
                 _context.Update(itemBuscado);
+                _context.Update(producto);
                 await _context.SaveChangesAsync();
             }
 
