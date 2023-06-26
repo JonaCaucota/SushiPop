@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SushiPopG5.Models;
 
@@ -18,9 +13,19 @@ namespace SushiPopG5.Controllers
         {
             _context = context;
         }
-
+        
         // GET: Categorias
         public async Task<IActionResult> Index()
+        {
+            return _context.Categoria != null ? 
+                View(await _context.Categoria.ToListAsync()) :
+                Problem("Entity set 'DbContext.Categoria'  is null.");
+        }
+
+        
+        //TODO: Arreglar metodo de categorias con productos filtrados.
+        
+        /*public async Task<IActionResult> Index()
         {
             if (_context.Categoria == null)
             {
@@ -32,7 +37,10 @@ namespace SushiPopG5.Controllers
             var categoriasConProductosFiltradas = categoriasConProductos.Where(c => c.Productos != null && c.Productos.Any());
 
             return View(categoriasConProductosFiltradas);
-        }
+        }*/
+        
+        
+        
 
         // GET: Categorias/Details/5
         public async Task<IActionResult> Details(int? id)
