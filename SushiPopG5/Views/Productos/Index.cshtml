@@ -12,32 +12,36 @@
     {
         <div class="col-4 d-flex justify-content-center pt-5">
             <div class="card text-center " style="width: 16rem;">
-                
+
                 @if (item.Stock == 0)
                 {
-                    <img src="images/sin_stock.png"/>
+                    <img src="images/sin_stock.png" class="h-100 card-img-top" />
                 }
                 else
                 {
                     @if (item.Foto == null)
                     {
-                        <img src="/images/foto_producto_default.png" class="card-img-top" alt="foto producto">
+                        <img src="/images/foto_producto_default.png" class="card-img-top h-50" alt="foto producto">
                     }
                     else
                     {
-                        <img src="@item.Foto" class="card-img-top" alt="foto producto">
+                        <img src="@item.Foto" class="card-img-top h-50" alt="foto producto">
                     }
                     <div class="card-body align-items-center bg-secondary">
                         <h5 class="card-title">@item.Nombre</h5>
                         <p class="card-text">@item.Descripcion</p>
                         <h5 class="card-title">@item.Precio</h5>
                         <div class="row bg-danger text-center">
-                            <div class="bg-danger col-6">
-                                <a class="text-decoration-none text-light" asp-action="Details" asp-route-id="@item.Id">Ver detalles</a>
+                            <div class="bg-danger @(ViewData["EsEmpleado"] != null && (bool)ViewData["EsEmpleado"] ? "col-6" : "col-12")">
+                                <a class="text-decoration-none text-light" asp-action="Details" asp-route-id="@item.Id">Ver
+                                    detalles</a>
                             </div>
-                            <div class="bg-danger col-6">
-                                <a class="text-decoration-none text-light" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                            </div>
+                            @if ((bool)ViewData["EsEmpleado"])
+                            {
+                                <div class="bg-danger col-6">
+                                    <a class="text-decoration-none text-light" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                                </div>
+                            }
                         </div>
                     </div>
                 }

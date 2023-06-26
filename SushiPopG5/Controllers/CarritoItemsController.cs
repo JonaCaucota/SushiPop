@@ -20,22 +20,22 @@ namespace SushiPopG5.Controllers
 
         // GET: CarritoItems
         [Authorize(Roles = "ADMIN, CLIENTE")]
-        public async Task<IActionResult> Index( )
+        public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await _context.Carrito
                 .Include(x => x.Cliente)
                 .Include(x => x.CarritoItems)
                 .Where(x => x.Cliente.Email.ToUpper() == user.NormalizedEmail && x.Cancelado == false && x.Procesado == false).FirstOrDefaultAsync();
-            
-            
+
+
             if (carritoCliente == null)
             {
-                return RedirectToAction("Index", controllerName:"Home");
+                return RedirectToAction("Index", controllerName: "Home");
             }
             if (carritoCliente.CarritoItems.Count == 0)
             {
-                return RedirectToAction("Index", controllerName:"Home");
+                return RedirectToAction("Index", controllerName: "Home");
             }
             return View(carritoCliente.CarritoItems);
 
@@ -60,23 +60,35 @@ namespace SushiPopG5.Controllers
         }
 
         // GET: CarritoItems/Create
-        [Authorize(Roles = "ADMIN, CLIENTE")]
+        [Authorize(Roles = "CLIENTE")]
         public async Task<IActionResult> Create(int? id)
         {
-            if (id == null) { }
+            if (id == null)
+            {
+                return Problem("El id es nulo");
+            }
 
             var producto = await _context.Producto.FindAsync(id);
 
-            if (producto == null) { }
-            
+            if (producto == null)
+            {
+                return Problem("El id es nulo");
+            }
+
             var user = await _userManager.GetUserAsync(User);
-            
-            if(user == null){}
-            
+
+            if (user == null) { 
+                return Problem("Usuario es null");
+            }
+
             // Si el usuario no es nulo
 
             var cliente = await _context.Cliente.Where(x => x.Email.ToUpper() == user.NormalizedEmail)
                 .FirstOrDefaultAsync();
+
+            if(cliente == null) {
+                return Problem("Cliente es nulo");
+            }
 
             //Antes de agregar un item hay que verificar que exista un carrito
             var carritoCliente = await obtenerCarrito(user);
@@ -98,7 +110,7 @@ namespace SushiPopG5.Controllers
             }
 
             var precioProducto = producto.Precio;
-            
+
             //Falta ver el dia
             int dia = 6;
             var descuento = await _context.Descuento.Where(x => x.ProductoId == producto.Id && x.Activo == true)
@@ -122,12 +134,12 @@ namespace SushiPopG5.Controllers
             else
             {
                 //Validar cantidad de stock
-                
+
                 itemBuscado.Cantidad += 1;
                 _context.Update(itemBuscado);
                 await _context.SaveChangesAsync();
             }
-            
+
             return RedirectToAction("Index");
         }
 
@@ -181,7 +193,7 @@ namespace SushiPopG5.Controllers
             }
             return View(carritoItem);
         }
-        
+
         [Authorize(Roles = "ADMIN, CLIENTE")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
@@ -194,7 +206,7 @@ namespace SushiPopG5.Controllers
             {
                 _context.CarritoItem.Remove(carritoItem);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -206,25 +218,25 @@ namespace SushiPopG5.Controllers
 
             carritoCliente.Cancelado = true;
             await _context.SaveChangesAsync();
-            
-            return RedirectToAction(nameof(Index), controllerName:"Home");
+
+            return RedirectToAction(nameof(Index), controllerName: "Home");
         }
-        
+
         public async Task<IActionResult> ComprarCarrito(bool confirmado)
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await obtenerCarrito(user);
             decimal subtotal = await CalcularSubTotal(carritoCliente);
-            
+
             //Calcular Gasto de envio consultando a la api (Deuda tecnica)
             decimal costoEnvio = 80;
-            
+
             //Falta ver el dia
             int dia = 6;
             var descuento = await _context.Descuento.Where(x => x.Activo == true)
                 .FirstOrDefaultAsync();
 
-            
+
             Pedido pedido = new Pedido();
             pedido.NroPedido = obtenerNumeroDePedido();
             pedido.Fecha = DateTime.Now;
@@ -248,11 +260,11 @@ namespace SushiPopG5.Controllers
 
         public async Task<IActionResult> MostrarPedido(Pedido pedido)
         {
-            return View("MostrarPedido", pedido );
+            return View("MostrarPedido", pedido);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CrearPedido (Pedido pedido, Carrito carrito)
+        public async Task<IActionResult> CrearPedido(Pedido pedido, Carrito carrito)
         {
             _context.Add(pedido);
             carrito.Procesado = true;
@@ -273,7 +285,7 @@ namespace SushiPopG5.Controllers
 
         private bool CarritoItemExists(int id)
         {
-          return (_context.CarritoItem?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.CarritoItem?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
         private async Task<Carrito> obtenerCarrito(IdentityUser user)
@@ -287,7 +299,7 @@ namespace SushiPopG5.Controllers
         private int obtenerNumeroDePedido()
         {
             int numPedidoBase = 30000;
-            
+
             int? ultimoNumPedido = _context.Pedido.OrderByDescending(p => p.Id).Select(p => p.NroPedido).FirstOrDefault();
 
             int numPedido = ultimoNumPedido.HasValue ? ultimoNumPedido.Value + 5 : numPedidoBase;
@@ -307,7 +319,7 @@ namespace SushiPopG5.Controllers
             return subtotal;
         }
 
-        private decimal CalcularPrecioProductoDescuento(Descuento descuento,decimal precioProducto)
+        private decimal CalcularPrecioProductoDescuento(Descuento descuento, decimal precioProducto)
         {
             if (descuento != null)
             {
@@ -321,12 +333,12 @@ namespace SushiPopG5.Controllers
                 {
                     precioProducto -= descuento.DescuentoMax;
                 }
-                
+
                 precioProducto = precioProducto * (1 - descuento.Porcentaje / 100);
             }
 
             return precioProducto;
         }
-        
+
     }
 }

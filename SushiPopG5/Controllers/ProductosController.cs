@@ -22,11 +22,16 @@ namespace SushiPopG5.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
+            bool esEmpleado = false;
+
             if (User.IsInRole("EMPLEADO") || User.IsInRole("ADMIN"))
             {
-                ViewData["ESEMPLEADO"] = true;
+                esEmpleado = true;
             }
-            return _context.Producto != null ? 
+
+            ViewData["EsEmpleado"] = esEmpleado;
+            
+            return _context.Producto != null ?
                           View(await _context.Producto.ToListAsync()) :
                           Problem("Entity set 'DbContext.Producto'  is null.");
         }
@@ -52,9 +57,14 @@ namespace SushiPopG5.Controllers
         // GET: Productos/Create
         [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Create()
-        
+
         {
-            ViewData["CATEGORIAS"] =   await _context.Categoria.ToListAsync();
+            if (_context.Categoria == null)
+            {
+                return Problem("Entity set 'DbContext.Categoria'  is null.");
+            }
+
+            ViewData["CATEGORIAS"] = await _context.Categoria.ToListAsync();
             return View();
         }
 
@@ -65,25 +75,43 @@ namespace SushiPopG5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock,CategoriaId")] Producto producto)
         {
-            
+            if (_context.Categoria == null || _context.Producto == null)
+            {
+                return Problem("Las entidades requeridas son null.");
+            }
+
             if (ModelState.IsValid)
             {
-                if (_context.Categoria != null)
+                var categoria = await _context.Categoria.FirstOrDefaultAsync(m => m.Id == producto.CategoriaId);
+                producto.Categoria = categoria;
+
+                var productoExistente = await _context.Producto.FirstOrDefaultAsync(p => p.Nombre == producto.Nombre || p.Foto == producto.Foto);
+
+                if (productoExistente != null)
                 {
-                    var categoria = await _context.Categoria.FirstOrDefaultAsync(m => m.Id == producto.CategoriaId);
-                    producto.Categoria = categoria;
+                    if (productoExistente.Nombre == producto.Nombre)
+                    {
+                        ModelState.AddModelError("Nombre", "Ya existe un producto con el mismo nombre.");
+                    }
+                    if (productoExistente.Foto == producto.Foto)
+                    {
+                        ModelState.AddModelError("Foto", "Ya se está utilizando esta foto para otro producto.");
+                    }
+
+                    ViewData["CATEGORIAS"] = await _context.Categoria.ToListAsync();
+                    return View(producto);
                 }
 
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CATEGORIAS"] =   await _context.Categoria.ToListAsync();
+            ViewData["CATEGORIAS"] = await _context.Categoria.ToListAsync();
             return View(producto);
         }
 
         // GET: Productos/Edit/5
-        [Authorize(Roles = "EMPLEADO")]
+        [Authorize(Roles = "EMPLEADO, ADMIN")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Producto == null)
@@ -96,6 +124,7 @@ namespace SushiPopG5.Controllers
             {
                 return NotFound();
             }
+
             return View(producto);
         }
 
@@ -166,14 +195,14 @@ namespace SushiPopG5.Controllers
             {
                 _context.Producto.Remove(producto);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductoExists(int id)
         {
-          return (_context.Producto?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Producto?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

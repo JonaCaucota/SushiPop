@@ -3,29 +3,35 @@
 @{
     ViewData["Title"] = "Details";
 }
-<div style="text-align: center;">
-<h1>Productos</h1>
+<div class="text-center">
+    <h1>Productos</h1>
 </div>
 
 
-<div style="display: flex; align-items: center; justify-content: center; margin-top: 20px;">
-    <img src="@Model.Foto" alt="Producto" width="200" height="200" style="float: left; margin-right: 20px;" />
-    <div style="float: left;">
-        <h4>@Model.Nombre</h4>
-        <div style="margin-top: 10px;">
-            <p>@Model.Descripcion</p>
-        </div>
-        <div style="display: flex; align-items: center;">
-            @if (Model.Stock > 0)
-            {
-                <p style="margin-right: 10px;">Precio: @Model.Precio</p>
-                <a asp-controller="CarritoItems" asp-action="Create" asp-route-Id="@Model?.Id" class="btn btn-warning text-white">Agregar al Carrito</a>
-            } else
-            {
-                <p style="text-decoration: line-through; margin-right: 10px;">Precio: @Model.Precio</p>
-                <p style="color: red;">Producto sin stock</p>
-            }
-            
+<section class="d-flex align-items-center justify-content-center my-5">
+    <div class="d-flex align-items-center justify-content-center w-75" style="gap: 1rem;">
+        <img src="@Model.Foto" alt="Producto" class="h-100 col-4" />
+        <div class="d-flex flex-column align-items-center col-8">
+            <h2>@Model.Nombre</h2>
+            <p class="text-center w-75">Descripción: @Model.Descripcion</p>
+            <div class="d-flex align-items-center justify-content-between w-50">
+                @if (Model.Stock > 0)
+
+                {
+                    <p class="text-info h3 mb-0">$ @Model.Precio</p>
+                    <a asp-controller="CarritoItems" asp-action="Create" asp-route-Id="@Model.Id"
+                        class="btn btn-warning text-white">Agregar al Carrito</a>
+                }
+
+                else
+
+                {
+                    <p class="h5" style="text-decoration: line-through">Precio: @Model.Precio</p>
+                    <p class="text-danger h5">Producto sin stock</p>
+                }
+
+            </div>
         </div>
     </div>
-</div>
+
+</section>
