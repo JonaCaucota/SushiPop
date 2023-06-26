@@ -220,10 +220,13 @@ namespace SushiPopG5.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var carritoCliente = await obtenerCarrito(user);
-
             carritoCliente.Cancelado = true;
+            
+            var carritoItem = await _context.CarritoItem.Where(x => x.CarritoId == carritoCliente.Id).FirstOrDefaultAsync();
+            var itemBuscado = await _context.Producto.Where(x => x.Id == carritoItem.ProductoId).FirstOrDefaultAsync();
+            itemBuscado.Stock += carritoItem.Cantidad;
+            _context.Update(itemBuscado);
             await _context.SaveChangesAsync();
-
             return RedirectToAction(nameof(Index), controllerName: "Home");
         }
 
