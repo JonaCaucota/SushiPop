@@ -203,18 +203,14 @@ namespace SushiPopG5.Controllers
         }
 
         [Authorize(Roles = "ADMIN, CLIENTE")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        [HttpPost]
+        public async Task<IActionResult> BorrarItem(int carritoItemId)
         {
-            if (_context.CarritoItem == null)
-            {
-                return Problem("Entity set 'DbContext.CarritoItem'  is null.");
-            }
-            var carritoItem = await _context.CarritoItem.FindAsync(id);
-            if (carritoItem != null)
-            {
-                _context.CarritoItem.Remove(carritoItem);
-            }
-
+            var carritoItem = await _context.CarritoItem.Where(x => x.Id == carritoItemId).FirstOrDefaultAsync();
+            var itemBuscado = await _context.Producto.Where(x => x.Id == carritoItem.ProductoId).FirstOrDefaultAsync();
+            itemBuscado.Stock += carritoItem.Cantidad;
+            _context.Update(itemBuscado);
+            _context.Remove(carritoItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

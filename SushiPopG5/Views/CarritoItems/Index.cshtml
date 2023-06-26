@@ -1,5 +1,4 @@
-﻿@using SushiPopG5.Controllers
-@model IEnumerable<SushiPopG5.Models.CarritoItem>
+﻿@model IEnumerable<SushiPopG5.Models.CarritoItem>
 
 @{
     ViewData["Title"] = "Index";
@@ -38,8 +37,12 @@
                 <td class="py-4">
                     <img src="@item.Producto.Foto" alt="Foto" width="150" height="100">
                 </td>
+                
                 <td class="py-4">
-                    <a class="bi bi-trash3-fill h2 text-dark" asp-action="DeleteConfirmed" asp-route-id="@item.Id"></a>
+                    <form asp-action="BorrarItem">
+                        <input type="hidden" name="carritoItemId" value="@item.Id" />
+                        <input type="submit" class="bi bi-trash3-fill h2 text-dark"/>
+                    </form>
                 </td>
             </tr>
         }
