@@ -133,7 +133,7 @@ namespace SushiPopG5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock")] Producto producto)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Descripcion,Precio,Costo,Foto,Stock,CategoriaId")] Producto producto)
         {
             if (id != producto.Id)
             {
